@@ -29,8 +29,6 @@ for i in range(5):
     # Definições iniciais
     max_epochs = 20
     tracker = CarbonTracker(epochs=max_epochs)
-    train_times = []
-    power_usages = []
 
     # Carregar e normalizar o CIFAR10
     transform = transforms.Compose([
@@ -50,15 +48,16 @@ for i in range(5):
     val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
+
     # Definir a rede neural LeNet-5
     class LeNet5(nn.Module):
         def __init__(self):
             super(LeNet5, self).__init__()
             self.conv1 = nn.Conv2d(3, 6, 5)
             self.conv2 = nn.Conv2d(6, 16, 5)
-            self.fc1   = nn.Linear(16*5*5, 120)
-            self.fc2   = nn.Linear(120, 84)
-            self.fc3   = nn.Linear(84, 10)
+            self.fc1 = nn.Linear(16 * 5 * 5, 120)
+            self.fc2 = nn.Linear(120, 84)
+            self.fc3 = nn.Linear(84, 10)
             self.pool = nn.MaxPool2d(2, 2)
             self.dropout = nn.Dropout(0.5)
             self.batchnorm1 = nn.BatchNorm2d(6)
@@ -67,12 +66,18 @@ for i in range(5):
         def forward(self, x):
             x = self.pool(torch.relu(self.batchnorm1(self.conv1(x))))
             x = self.pool(torch.relu(self.batchnorm2(self.conv2(x))))
-            x = x.view(-1, 16*5*5)
+            x = x.view(-1, 16 * 5 * 5)
             x = torch.relu(self.fc1(x))
             x = self.dropout(x)
             x = torch.relu(self.fc2(x))
             x = self.fc3(x)
             return x
+
+
+    model = LeNet5().to(device)
+    print(model)
+    summary(model, (3, 32, 32))
+
 
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
@@ -96,7 +101,7 @@ for i in range(5):
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
             tracker.epoch_end()
-            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
             model.eval()
@@ -114,62 +119,67 @@ for i in range(5):
                     correct += (predicted == labels).sum().item()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
 
+
     # Treinar 10 modelos e selecionar o melhor
-    num_models = 10
-    best_val_loss = float('inf')
+    num_models = 5
+    avg_valid_loss = []
     best_model_idx = -1
+    best_model = model
+    models = []
     metrics = []
-    model = LeNet5().to(device)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-    summary(model, (3,32,32))
+    avg_metrics = []
+    train_times = []
+    train_powers = []
 
     for i in range(num_models):
-        timeStart = datetime.now()
-        print(f'Training model {i+1}/{num_models}')
+        start_time = datetime.now()
+        print(f'Training model {i + 1}/{num_models}')
         input = torch.randn(1, 3, 32, 32).to(device)
         model = LeNet5().to(device)
-        flops, params = profile(model, inputs=(input, ), verbose=False)
+        flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-        train_loss, train_accuracy, val_loss, val_accuracy = train_and_validate(model, train_loader, val_loader, criterion, optimizer, 20)
+        train_loss, train_accuracy, val_loss, val_accuracy = train_and_validate(model, train_loader, val_loader,
+                                                                                criterion, optimizer, 20)
+        end_time = datetime.now()
+        train_time = (end_time - start_time).total_seconds()
+        train_times.append(train_time)
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        info = pynvml.nvmlDeviceGetPowerUsage(handle)
+        power_usage = info / 1000.0
+        train_powers.append(power_usage)
         metrics.append((train_loss, train_accuracy, val_loss, val_accuracy))
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
         avg_train_accuracy = np.mean([m[1] for m in metrics])
         avg_val_loss = np.mean([m[2] for m in metrics])
         avg_val_accuracy = np.mean([m[3] for m in metrics])
-        timeEnd = datetime.now()
-        tempoTreino = timeEnd - timeStart
-        train_times.append(tempoTreino.total_seconds())  # Nova linha
-        print(f'Model {i + 1}: Avg Train Loss: {avg_train_loss:.4f}, Avg Train Accuracy: {avg_train_accuracy:.4f}, Avg Val Loss: {avg_val_loss:.4f}, Avg Val Accuracy: {avg_val_accuracy:.4f}')
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            best_model_idx = i
-            best_model = model
-        print(f'Tempo de treino: {tempoTreino}')
+        print(f'Model {i + 1}: Avg Train Loss: {avg_train_loss:.4f}, Avg Train Accuracy: {avg_train_accuracy:.4f}, '
+              f'Avg Val Loss: {avg_val_loss:.4f}, Avg Val Accuracy: {avg_val_accuracy:.4f}')
+        print(f'Tempo de treino: {train_time}')
         print(f'FLOPs: {flops}')
         print(f'Parâmetros: {params}')
-        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-        info = pynvml.nvmlDeviceGetPowerUsage(handle)
-        power_usage = info / 1000.0  # Nova linha
-        power_usages.append(power_usage)  # Nova linha
         print(f'Power usage: {power_usage} W')
+        avg_valid_loss.append(val_loss / len(val_loader))
+        avg_metrics.append(
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
+        models.append(model)
 
-    # # Redirecione a saída padrão de volta ao normal
-    # sys.stdout = old_stdout
-    # # Agora a saída do CarbonTracker está na variável 'output'
-    # carbontracker_output = output.getvalue()
+    # Seleciona o melhor modelo com base na menor perda de validação.
+    best_model_index = avg_valid_loss.index(min(avg_valid_loss))
+    best_model = models[best_model_index]
+    print('************************************************************************************************')
+    print(
+        f'O melhor modelo é o Modelo {best_model_index + 1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
 
-    # Imprimir qual modelo foi escolhido como o melhor
-    print(f'O melhor modelo é o Modelo {best_model_idx+1} com a menor perda média de validação: {best_val_loss:.4f}')
-
+    print('************************************************************************************************')
     # Calcular a média dos tempos de treino e power usage
-    avg_train_time = np.mean(train_times)  # Nova linha
-    avg_power_usage = np.mean(power_usages)  # Nova linha
+    avg_train_time = np.mean(train_times)
+    avg_power_usage = np.mean(train_powers)  # Nova linha
+    avg_metrics.append((avg_train_time, avg_power_usage))
     print(f'Average Train Time: {avg_train_time} seconds')  # Nova linha
     print(f'Average Power Usage: {avg_power_usage} W')  # Nova linha
 
@@ -197,8 +207,8 @@ for i in range(5):
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
 
-
     pynvml.nvmlShutdown()
+
 
     # verifica as pastas existentes
     def create_dir(base_dir):
@@ -214,6 +224,7 @@ for i in range(5):
         os.makedirs(new_dir)
         return new_dir
 
+
     # Use a função para criar um novo diretório
     new_dir = create_dir('resultados')
 
@@ -222,15 +233,9 @@ for i in range(5):
     sns.heatmap(conf_matrix, annot=True, fmt='d')
     plt.savefig(f'{new_dir}/confusion_matrix.png')
 
-    # Salvar os resultados do CarbonTracker
-    tracker_results = tracker.get_data()
-    df_tracker_results = pd.DataFrame(tracker_results)
-    df_tracker_results.to_csv(f'{new_dir}/carbontracker_results.csv', index=False)
-
     # Salvar métricas em um arquivo Excel
-    df_metrics = pd.DataFrame(metrics, columns=['Train Loss', 'Train Accuracy', 'Val Loss', 'Val Accuracy'])
-    df_metrics['Train Time'] = train_times  # Nova linha
-    df_metrics['Power Usage'] = power_usages  # Nova linha
+    df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
+                                                    'avg_Val Accuracy', 'avg_TrainTime', 'avg_PowerUsage'])
     df_metrics.to_excel(f'{new_dir}/model_metrics.xlsx', index=False)
 
     # Salvar métricas do melhor modelo em um arquivo de texto
@@ -239,8 +244,12 @@ for i in range(5):
         f.write(f'Precision: {precision}\n')
         f.write(f'Recall: {recall}\n')
         f.write(f'F1 Score: {f1}\n')
-        f.write(f'Train Time: {train_times[best_model_idx]} seconds\n')  # Nova linha
-        f.write(f'Power Usage: {power_usages[best_model_idx]} W\n')  # Nova linha
 
+    # # Salvar os resultados do CarbonTracker
+    # tracker_results = tracker.get_data()
+    # df_tracker_results = pd.DataFrame({k: pd.Series(v) for k, v in tracker_results.items()})
+    # df_tracker_results.to_csv(f'{new_dir}/carbontracker_results.csv', index=False)
     tracker.stop()
     print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
+
+    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
