@@ -135,9 +135,11 @@ for i in range(5):
 
             return out  # Retorna a saída do bloco
 
+
     model = ResNet50().to(device)
     print(model)
     summary(model, (3, 32, 32))
+
 
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
@@ -161,7 +163,7 @@ for i in range(5):
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
             tracker.epoch_end()
-            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
             model.eval()
@@ -179,7 +181,7 @@ for i in range(5):
                     correct += (predicted == labels).sum().item()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
 
 
@@ -198,7 +200,7 @@ for i in range(5):
         start_time = datetime.now()
         print(f'Training model {i + 1}/{num_models}')
         input = torch.randn(1, 3, 32, 32).to(device)
-        model = ResNet50.to(device)
+        model = ResNet50().to(device)
         flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
@@ -269,6 +271,7 @@ for i in range(5):
 
     pynvml.nvmlShutdown()
 
+
     # verifica as pastas existentes
     def create_dir(base_dir):
         if not os.path.exists(base_dir):
@@ -282,6 +285,7 @@ for i in range(5):
             new_dir = os.path.join(base_dir, 'resNet_1')
         os.makedirs(new_dir)
         return new_dir
+
 
     # Use a função para criar um novo diretório
     new_dir = create_dir('resultados')
