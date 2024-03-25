@@ -27,7 +27,7 @@ for i in range(3):
     pynvml.nvmlInit()
 
     # Definições iniciais
-    max_epochs = 50
+    max_epochs = 30
     tracker = CarbonTracker(epochs=max_epochs)
 
     # Carregar e normalizar o CIFAR10
@@ -54,21 +54,23 @@ for i in range(3):
             super(LeNet5, self).__init__()
             self.conv1 = nn.Conv2d(3, 6, 5)
             self.conv2 = nn.Conv2d(6, 16, 5)
-            self.fc1   = nn.Linear(16*5*5, 120)
-            self.fc2   = nn.Linear(120, 84)
-            self.fc3   = nn.Linear(84, 10)
+            self.fc1 = nn.Linear(16 * 5 * 5, 120)
+            self.fc2 = nn.Linear(120, 84)
+            self.fc3 = nn.Linear(84, 10)
             self.pool = nn.MaxPool2d(2, 2)
-            self.dropout = nn.Dropout(0.5)
+            self.dropout1 = nn.Dropout(0.5)
+            self.dropout2 = nn.Dropout(0.5)  # Nova camada de dropout
             self.batchnorm1 = nn.BatchNorm2d(6)
             self.batchnorm2 = nn.BatchNorm2d(16)
 
         def forward(self, x):
             x = self.pool(torch.relu(self.batchnorm1(self.conv1(x))))
             x = self.pool(torch.relu(self.batchnorm2(self.conv2(x))))
-            x = x.view(-1, 16*5*5)
+            x = x.view(-1, 16 * 5 * 5)
             x = torch.relu(self.fc1(x))
-            x = self.dropout(x)
+            x = self.dropout1(x)
             x = torch.relu(self.fc2(x))
+            x = self.dropout2(x)  # Aplicar dropout após a camada fc2
             x = self.fc3(x)
             return x
 
@@ -140,7 +142,7 @@ for i in range(3):
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
         train_loss, train_accuracy, val_loss, val_accuracy = (train_and_validate
                                                               (model, train_loader, val_loader,
-                                                               criterion, optimizer, 50))
+                                                               criterion, optimizer, 30))
         end_time = datetime.now()
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
@@ -160,7 +162,7 @@ for i in range(3):
         print(f'FLOPs: {flops}')
         print(f'Parâmetros: {params}')
         print(f'Power usage: {power_usage} W')
-        avg_valid_loss.append(val_loss / len(val_loader))
+        avg_valid_loss.append(avg_val_loss)
         avg_metrics.append((avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
         models.append(model)
 

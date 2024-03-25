@@ -27,7 +27,7 @@ for i in range(5):
     pynvml.nvmlInit()
 
     # Hiperparâmetros e inicializações
-    max_epochs = 50
+    max_epochs = 30
     tracker = CarbonTracker(epochs=max_epochs)
 
     # Carregamento e normalização do conjunto de dados CIFAR10
@@ -145,10 +145,10 @@ for i in range(5):
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
         train_loss, train_accuracy, val_loss, val_accuracy = train_and_validate(model, train_loader, val_loader,
-                                                                                criterion, optimizer, 50)
+                                                                                criterion, optimizer, 30)
         end_time = datetime.now()
-        train_time = (end_time - start_time).total_seconds()
-        train_times.append(train_time)
+        train_time = (end_time - start_time)
+        train_times.append(train_time.total_seconds())
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)
         info = pynvml.nvmlDeviceGetPowerUsage(handle)
         power_usage = info / 1000.0
@@ -165,7 +165,7 @@ for i in range(5):
         print(f'FLOPs: {flops}')
         print(f'Parâmetros: {params}')
         print(f'Power usage: {power_usage} W')
-        avg_valid_loss.append(val_loss / len(val_loader))
+        avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
             (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
         models.append(model)
