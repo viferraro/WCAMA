@@ -22,12 +22,12 @@ SEED = 10
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
-for i in range(5):
+for i in range(3):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
     # Definições iniciais
-    max_epochs = 20
+    max_epochs = 50
     tracker = CarbonTracker(epochs=max_epochs)
 
     # Carregar e normalizar o CIFAR10
@@ -48,16 +48,15 @@ for i in range(5):
     val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
-
     # Definir a rede neural LeNet-5
     class LeNet5(nn.Module):
         def __init__(self):
             super(LeNet5, self).__init__()
             self.conv1 = nn.Conv2d(3, 6, 5)
             self.conv2 = nn.Conv2d(6, 16, 5)
-            self.fc1 = nn.Linear(16 * 5 * 5, 120)
-            self.fc2 = nn.Linear(120, 84)
-            self.fc3 = nn.Linear(84, 10)
+            self.fc1   = nn.Linear(16*5*5, 120)
+            self.fc2   = nn.Linear(120, 84)
+            self.fc3   = nn.Linear(84, 10)
             self.pool = nn.MaxPool2d(2, 2)
             self.dropout = nn.Dropout(0.5)
             self.batchnorm1 = nn.BatchNorm2d(6)
@@ -66,18 +65,16 @@ for i in range(5):
         def forward(self, x):
             x = self.pool(torch.relu(self.batchnorm1(self.conv1(x))))
             x = self.pool(torch.relu(self.batchnorm2(self.conv2(x))))
-            x = x.view(-1, 16 * 5 * 5)
+            x = x.view(-1, 16*5*5)
             x = torch.relu(self.fc1(x))
             x = self.dropout(x)
             x = torch.relu(self.fc2(x))
             x = self.fc3(x)
             return x
 
-
     model = LeNet5().to(device)
     print(model)
     summary(model, (3, 32, 32))
-
 
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
@@ -101,7 +98,7 @@ for i in range(5):
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
             tracker.epoch_end()
-            print(f'Epoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
             model.eval()
@@ -119,9 +116,8 @@ for i in range(5):
                     correct += (predicted == labels).sum().item()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
-
 
     # Treinar 10 modelos e selecionar o melhor
     num_models = 5
@@ -136,17 +132,18 @@ for i in range(5):
 
     for i in range(num_models):
         start_time = datetime.now()
-        print(f'Training model {i + 1}/{num_models}')
+        print(f'Training model {i+1}/{num_models}')
         input = torch.randn(1, 3, 32, 32).to(device)
         model = LeNet5().to(device)
-        flops, params = profile(model, inputs=(input,), verbose=False)
+        flops, params = profile(model, inputs=(input, ), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-        train_loss, train_accuracy, val_loss, val_accuracy = train_and_validate(model, train_loader, val_loader,
-                                                                                criterion, optimizer, 20)
+        train_loss, train_accuracy, val_loss, val_accuracy = (train_and_validate
+                                                              (model, train_loader, val_loader,
+                                                               criterion, optimizer, 50))
         end_time = datetime.now()
-        train_time = (end_time - start_time).total_seconds()
-        train_times.append(train_time)
+        train_time = (end_time - start_time)
+        train_times.append(train_time.total_seconds())
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)
         info = pynvml.nvmlDeviceGetPowerUsage(handle)
         power_usage = info / 1000.0
@@ -164,16 +161,14 @@ for i in range(5):
         print(f'Parâmetros: {params}')
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(val_loss / len(val_loader))
-        avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
+        avg_metrics.append((avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
         models.append(model)
 
     # Seleciona o melhor modelo com base na menor perda de validação.
     best_model_index = avg_valid_loss.index(min(avg_valid_loss))
     best_model = models[best_model_index]
     print('************************************************************************************************')
-    print(
-        f'O melhor modelo é o Modelo {best_model_index + 1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
+    print(f'O melhor modelo é o Modelo {best_model_index+1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
 
     print('************************************************************************************************')
     # Calcular a média dos tempos de treino e power usage
@@ -207,8 +202,8 @@ for i in range(5):
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
 
-    pynvml.nvmlShutdown()
 
+    pynvml.nvmlShutdown()
 
     # verifica as pastas existentes
     def create_dir(base_dir):
@@ -223,7 +218,6 @@ for i in range(5):
             new_dir = os.path.join(base_dir, 'leNet_1')
         os.makedirs(new_dir)
         return new_dir
-
 
     # Use a função para criar um novo diretório
     new_dir = create_dir('resultados')

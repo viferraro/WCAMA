@@ -22,12 +22,12 @@ SEED = 10
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Dispositivo utilizado: {device}')
 
-for i in range(5):
+for i in range(1):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
     # Hiperparâmetros e inicializações
-    max_epochs = 20
+    max_epochs = 50
     tracker = CarbonTracker(epochs=max_epochs)
 
     # Carregamento e normalização do conjunto de dados CIFAR10
@@ -135,11 +135,9 @@ for i in range(5):
 
             return out  # Retorna a saída do bloco
 
-
     model = ResNet50().to(device)
     print(model)
     summary(model, (3, 32, 32))
-
 
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
@@ -163,7 +161,7 @@ for i in range(5):
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
             tracker.epoch_end()
-            print(f'Epoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
             model.eval()
@@ -181,12 +179,12 @@ for i in range(5):
                     correct += (predicted == labels).sum().item()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
 
 
-    # Treinar 10 modelos e selecionar o melhor
-    num_models = 10
+    # Treinar 5 modelos e selecionar o melhor
+    num_models = 5
     avg_valid_loss = []
     best_model_idx = -1
     best_model = model
@@ -205,7 +203,7 @@ for i in range(5):
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
         train_loss, train_accuracy, val_loss, val_accuracy = train_and_validate(model, train_loader, val_loader,
-                                                                                criterion, optimizer, 20)
+                                                                                criterion, optimizer, 50)
         end_time = datetime.now()
         train_time = (end_time - start_time).total_seconds()
         train_times.append(train_time)
@@ -271,7 +269,6 @@ for i in range(5):
 
     pynvml.nvmlShutdown()
 
-
     # verifica as pastas existentes
     def create_dir(base_dir):
         if not os.path.exists(base_dir):
@@ -285,7 +282,6 @@ for i in range(5):
             new_dir = os.path.join(base_dir, 'resNet_1')
         os.makedirs(new_dir)
         return new_dir
-
 
     # Use a função para criar um novo diretório
     new_dir = create_dir('resultados')
