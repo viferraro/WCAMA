@@ -217,12 +217,12 @@ for i in range(5):
         if not os.path.exists(base_dir):
             os.makedirs(base_dir)
         dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
-        dirs = [d for d in dirs if 'teste_' in d]
+        dirs = [d for d in dirs if 'alexNet_' in d]
         if dirs:
             max_index = max([int(d.split('_')[1]) for d in dirs])
-            new_dir = os.path.join(base_dir, f'teste_{max_index + 1}')
+            new_dir = os.path.join(base_dir, f'alexNet_{max_index + 1}')
         else:
-            new_dir = os.path.join(base_dir, 'teste_1')
+            new_dir = os.path.join(base_dir, 'alexNet_1')
         os.makedirs(new_dir)
         return new_dir
 
