@@ -22,7 +22,7 @@ SEED = 10
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
-for i in range(3):
+for i in range(1):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
@@ -122,23 +122,15 @@ for i in range(3):
         return train_loss, train_accuracy, val_loss, val_accuracy
 
 
-    # Define a função para criar um diretório se ele não existir
+    # Defina uma função para criar um diretório se ele não existir
     def create_dir(base_dir, subfolder_name):
         base_dir = os.path.join(base_dir, subfolder_name)
         if not os.path.exists(base_dir):
             os.makedirs(base_dir)
-        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
-        dirs = [d for d in dirs if 'leNet_' in d]
-        if dirs:
-            max_index = max([int(d.split('_')[1]) for d in dirs])
-            new_dir = os.path.join(base_dir, f'leNet_{max_index + 1}')
-        else:
-            new_dir = os.path.join(base_dir, 'leNet_1')
-        os.makedirs(new_dir)
-        return new_dir
+        return base_dir
 
     # Treinar 5 modelos e selecionar o melhor
-    num_models = 5
+    num_models = 3
     avg_valid_loss = []
     best_model_idx = -1
     best_model = model
@@ -147,6 +139,10 @@ for i in range(3):
     avg_metrics = []
     train_times = []
     train_powers = []
+
+    # Crie o diretório pai 'leNet_x' e o subdiretório 'leNetModelos'
+    parent_dir = create_dir('resultados', f'leNet_{i + 1}')
+    sub_dir = create_dir(parent_dir, 'leNetModelos')
 
     for i in range(num_models):
         start_time = datetime.now()
@@ -183,14 +179,13 @@ for i in range(3):
         avg_metrics.append(
             (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
         models.append(model)
-        # Crie um novo diretório para cada modelo
-        new_dir = create_dir('resultados', f'leNet_{i + 1}')
 
-        # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
+        # Cria um DataFrame com as métricas médias e salve-o em um arquivo Excel
         df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
                                                         'avg_Val Accuracy', 'avg_TrainTime', 'avg_PowerUsage'])
-        # Salve as métricas de cada modelo em um arquivo separado
-        df_metrics.to_excel(f'{new_dir}/model_metrics_{i + 1}.xlsx', index=False)
+
+        # Salve as métricas de cada modelo em um arquivo separado no subdiretório 'leNetModelos'
+        df_metrics.to_excel(f'{sub_dir}/model_metrics_{i + 1}.xlsx', index=False)
 
     # Seleciona o melhor modelo com base na menor perda de validação.
     best_model_index = avg_valid_loss.index(min(avg_valid_loss))
@@ -233,20 +228,13 @@ for i in range(3):
 
     pynvml.nvmlShutdown()
 
-    # Use a função para criar um novo diretório
-    new_dir = create_dir('resultados', 'leNet')  # Forneça um valor para o argumento subfolder_name
-
-    #  Imprimir e salvar a matriz de confusão
-    conf_matrix = confusion_matrix(y_true, y_pred)
-    sns.heatmap(conf_matrix, annot=True, fmt='d')
-    plt.savefig(f'{new_dir}/confusion_matrix.png')
-
-    # Salvar métricas do melhor modelo em um arquivo de texto
-    with open(f'{new_dir}/best_model_metrics.txt', 'w') as f:
-        f.write(f'Accuracy: {accuracy}\n')
-        f.write(f'Precision: {precision}\n')
-        f.write(f'Recall: {recall}\n')
-        f.write(f'F1 Score: {f1}\n')
+    # Salvar a matriz de confusão e as métricas do melhor modelo no diretório pai 'leNet_'
+    plt.savefig(f'{parent_dir}/confusion_matrix.png')
+    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
+        f.write(f'Accuracy: {accuracy}\\n')
+        f.write(f'Precision: {precision}\\n')
+        f.write(f'Recall: {recall}\\n')
+        f.write(f'F1 Score: {f1}\\n')
 
     # # Salvar os resultados do CarbonTracker
     # tracker_results = tracker.get_data()
