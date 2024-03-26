@@ -22,7 +22,7 @@ SEED = 10
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Dispositivo utilizado: {device}')
 
-for i in range(5):
+for i in range(1):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
@@ -125,8 +125,24 @@ for i in range(5):
             print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
 
+
+    # Define a função para criar um diretório se ele não existir
+    def create_dir(base_dir, subfolder_name):
+        base_dir = os.path.join(base_dir, subfolder_name)
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
+        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
+        dirs = [d for d in dirs if 'alexNet_' in d]
+        if dirs:
+            max_index = max([int(d.split('_')[1]) for d in dirs])
+            new_dir = os.path.join(base_dir, f'alexNet_{max_index + 1}')
+        else:
+            new_dir = os.path.join(base_dir, 'alexNet_1')
+        os.makedirs(new_dir)
+        return new_dir
+
     # Treinar 5 modelos e selecionar o melhor
-    num_models = 5
+    num_models = 2
     avg_valid_loss = []
     best_model_idx = -1
     best_model = model
@@ -170,6 +186,15 @@ for i in range(5):
             (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
         models.append(model)
 
+        # Crie um novo diretório para cada modelo
+        new_dir = create_dir('resultados', f'alexNet_{i + 1}')
+
+        # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
+        df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
+                                                        'avg_Val Accuracy', 'avg_TrainTime', 'avg_PowerUsage'])
+        # Salve as métricas de cada modelo em um arquivo separado
+        df_metrics.to_excel(f'{new_dir}/model_metrics_{i + 1}.xlsx', index=False)
+
         # Seleciona o melhor modelo com base na menor perda de validação.
     best_model_index = avg_valid_loss.index(min(avg_valid_loss))
     best_model = models[best_model_index]
@@ -211,33 +236,10 @@ for i in range(5):
 
     pynvml.nvmlShutdown()
 
-
-    # verifica as pastas existentes
-    def create_dir(base_dir):
-        if not os.path.exists(base_dir):
-            os.makedirs(base_dir)
-        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
-        dirs = [d for d in dirs if 'alexNet_' in d]
-        if dirs:
-            max_index = max([int(d.split('_')[1]) for d in dirs])
-            new_dir = os.path.join(base_dir, f'alexNet_{max_index + 1}')
-        else:
-            new_dir = os.path.join(base_dir, 'alexNet_1')
-        os.makedirs(new_dir)
-        return new_dir
-
-    # Use a função para criar um novo diretório
-    new_dir = create_dir('resultados')
-
     #  Imprimir e salvar a matriz de confusão
     conf_matrix = confusion_matrix(y_true, y_pred)
     sns.heatmap(conf_matrix, annot=True, fmt='d')
     plt.savefig(f'{new_dir}/confusion_matrix.png')
-
-    # Salvar métricas em um arquivo Excel
-    df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
-                                                    'avg_Val Accuracy', 'avg_TrainTime', 'avg_PowerUsage'])
-    df_metrics.to_excel(f'{new_dir}/model_metrics.xlsx', index=False)
 
     # Salvar métricas do melhor modelo em um arquivo de texto
     with open(f'{new_dir}/best_model_metrics.txt', 'w') as f:
