@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
@@ -14,74 +15,115 @@ from torchsummary import summary
 import pynvml
 import seaborn as sns
 import matplotlib.pyplot as plt
+import io
+import sys
+
 
 # Valor usado para inicializar o gerador de números aleatórios
 SEED = 10
 
-# Verificar se a GPU está disponível
+# Verificação da disponibilidade da GPU e seleção do dispositivo
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(device)
+print(f'Dispositivo utilizado: {device}')
 
 for i in range(1):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
-    # Definições iniciais
-    max_epochs = 30
+    # Hiperparâmetros e inicializações
+    max_epochs = 20
     tracker = CarbonTracker(epochs=max_epochs)
 
-    # Carregar e normalizar o CIFAR10
+    # Carregamento e normalização do conjunto de dados MNIST
     transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        transforms.Normalize((0.5,), (0.5,))
     ])
+    full_train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+    test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
-    full_train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-    test_dataset = datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
-
-    # Dividir o conjunto de treino em treino e validação
     train_size = int(0.8 * len(full_train_dataset))
     val_size = len(full_train_dataset) - train_size
     train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-    train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
-
-    # Definir a rede neural LeNet-5
-    class LeNet5(nn.Module):
+    # Definição da arquitetura da rede neural AlexNet
+    class AlexNet(nn.Module):
         def __init__(self):
-            super(LeNet5, self).__init__()
-            self.conv1 = nn.Conv2d(3, 6, 5)
-            self.conv2 = nn.Conv2d(6, 16, 5)
-            self.fc1 = nn.Linear(16 * 5 * 5, 120)
-            self.fc2 = nn.Linear(120, 84)
-            self.fc3 = nn.Linear(84, 10)
+            super(AlexNet, self).__init__()
+            self.conv1 = nn.Conv2d(1, 96, 3, padding=1)
+            self.conv2 = nn.Conv2d(96, 256, 3, padding=1)
+            # self.conv3 = nn.Conv2d(256, 384, 3, padding=1)  # Removido para reduzir a complexidade
+            # self.conv4 = nn.Conv2d(384, 384, 3, padding=1)  # Removido para reduzir a complexidade
+            self.conv5 = nn.Conv2d(256, 256, 3, padding=1)  # Modificado para aceitar a saída de conv2
+            self.fc1   = nn.Linear(256*3*3, 4608)
+            self.fc2   = nn.Linear(4608, 4608)
+            self.fc3   = nn.Linear(4608, 10)
             self.pool = nn.MaxPool2d(2, 2)
-            self.dropout1 = nn.Dropout(0.5)
-            self.dropout2 = nn.Dropout(0.5)  # Nova camada de dropout
-            self.batchnorm1 = nn.BatchNorm2d(6)
-            self.batchnorm2 = nn.BatchNorm2d(16)
+            self.dropout = nn.Dropout(0.5)
+            self.batchnorm1 = nn.BatchNorm2d(96)
+            self.batchnorm2 = nn.BatchNorm2d(256)
+            # self.batchnorm3 = nn.BatchNorm2d(384)  # Removido para reduzir a complexidade
+            # self.batchnorm4 = nn.BatchNorm2d(384)  # Removido para reduzir a complexidade
+            self.batchnorm5 = nn.BatchNorm2d(256)
 
         def forward(self, x):
             x = self.pool(torch.relu(self.batchnorm1(self.conv1(x))))
             x = self.pool(torch.relu(self.batchnorm2(self.conv2(x))))
-            x = x.view(-1, 16 * 5 * 5)
+            # x = torch.relu(self.batchnorm3(self.conv3(x)))  # Removido para reduzir a complexidade
+            # x = torch.relu(self.batchnorm4(self.conv4(x)))  # Removido para reduzir a complexidade
+            x = self.pool(torch.relu(self.batchnorm5(self.conv5(x))))
+            x = x.view(-1, 256*3*3)
             x = torch.relu(self.fc1(x))
-            x = self.dropout1(x)
+            x = self.dropout(x)
             x = torch.relu(self.fc2(x))
-            x = self.dropout2(x)  # Aplicar dropout após a camada fc2
+            x = self.dropout(x)
             x = self.fc3(x)
-            return x
+            output = F.log_softmax(x, dim=1)
+            return output
 
-    model = LeNet5().to(device)
+    model = AlexNet().to(device)
     print(model)
-    summary(model, (3, 32, 32))
+
+    # Defina uma função para criar um diretório com incremento se ele já existir
+    def create_incremented_dir(base_dir, subfolder_name):
+        i = 1
+        parent_dir = os.path.join(base_dir, f"{subfolder_name}_{i}")
+        while os.path.exists(parent_dir):
+            i += 1
+            parent_dir = os.path.join(base_dir, f"{subfolder_name}_{i}")
+        os.makedirs(parent_dir)
+        return parent_dir
+
+    # Crie o diretório pai 'alexNetMNIST_' com incremento se necessário
+    parent_dir = create_incremented_dir('resultados', 'alexNetMNIST')
+    print(f'Diretório criado: {parent_dir}')
+
+    # Salvar a saída padrão original
+    original_stdout = sys.stdout
+
+    # Redirecionar a saída padrão para um buffer de string
+    sys.stdout = buffer = io.StringIO()
+
+    # Chamar a função summary
+    summary(model, (1, 28, 28))
+
+    # Obter o valor da string do buffer
+    summary_str = buffer.getvalue()
+
+    # Restaurar a saída padrão original
+    sys.stdout = original_stdout
+
+    # Salvar a string de resumo em um arquivo
+    with open(f'{parent_dir}/model_summary.txt', 'w') as f:
+        f.write(summary_str)
 
     # Função para treinar e validar um modelo
-    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
+    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
         model.train()
-        for epoch in range(max_epochs):
+        for epoch in range(epochs):
             tracker.epoch_start()
             running_loss = 0.0
             correct = 0
@@ -122,12 +164,12 @@ for i in range(1):
         return train_loss, train_accuracy, val_loss, val_accuracy
 
 
-    # Defina uma função para criar um diretório se ele não existir
-    def create_dir(base_dir, subfolder_name):
-        base_dir = os.path.join(base_dir, subfolder_name)
-        if not os.path.exists(base_dir):
-            os.makedirs(base_dir)
-        return base_dir
+    # # Define uma função para criar um diretório se ele não existir
+    # def create_dir(base_dir, subfolder_name):
+    #     base_dir = os.path.join(base_dir, subfolder_name)
+    #     if not os.path.exists(base_dir):
+    #         os.makedirs(base_dir)
+    #     return base_dir
 
     # Treinar 5 modelos e selecionar o melhor
     num_models = 3
@@ -140,21 +182,20 @@ for i in range(1):
     train_times = []
     train_powers = []
 
-    # Crie o diretório pai 'leNet_x' e o subdiretório 'leNetModelos'
-    parent_dir = create_dir('resultados', f'leNet_{i + 1}')
-    sub_dir = create_dir(parent_dir, 'leNetModelos')
+    # # Cria o diretório pai 'alexNet_x'
+    # parent_dir = create_dir('resultados', f'alexNet_{i + 1}')
 
     for i in range(num_models):
         start_time = datetime.now()
         print(f'Training model {i+1}/{num_models}')
-        input = torch.randn(1, 3, 32, 32).to(device)
-        model = LeNet5().to(device)
-        flops, params = profile(model, inputs=(input, ), verbose=False)
+        input = torch.randn(1, 1, 28, 28).to(device)
+        model = AlexNet().to(device)
+        flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
         train_loss, train_accuracy, val_loss, val_accuracy = (train_and_validate
                                                               (model, train_loader, val_loader,
-                                                               criterion, optimizer, 30))
+                                                               criterion, optimizer, 20))
         end_time = datetime.now()
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
@@ -162,7 +203,7 @@ for i in range(1):
         info = pynvml.nvmlDeviceGetPowerUsage(handle)
         power_usage = info / 1000.0
         train_powers.append(power_usage)
-        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy))
+        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds(), power_usage))
 
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
@@ -177,29 +218,33 @@ for i in range(1):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(), power_usage))
         models.append(model)
 
-        # Cria um DataFrame com as métricas médias e salve-o em um arquivo Excel
-        df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
-                                                        'avg_Val Accuracy', 'avg_TrainTime', 'avg_PowerUsage'])
+    # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
+    df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
+                                                    'avg_Val Accuracy', 'TrainTime', 'PowerUsage'])
 
-        # Salve as métricas de cada modelo em um arquivo separado no subdiretório 'leNetModelos'
-        df_metrics.to_excel(f'{sub_dir}/model_metrics_{i + 1}.xlsx', index=False)
+    # Adicione uma coluna 'Model' ao DataFrame
+    df_metrics.insert(0, 'Model', ['Modelo_' + str(i + 1) for i in range(num_models)])
+
+    # Salve as métricas de todos os modelos em um único arquivo no diretório pai 'alexNet_x'
+    df_metrics.to_excel(f'{parent_dir}/models_metrics.xlsx', index=False)
 
     # Seleciona o melhor modelo com base na menor perda de validação.
     best_model_index = avg_valid_loss.index(min(avg_valid_loss))
     best_model = models[best_model_index]
     print('************************************************************************************************')
-    print(f'O melhor modelo é o Modelo {best_model_index+1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
+    print(
+        f'O melhor modelo é o Modelo {best_model_index + 1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
 
     print('************************************************************************************************')
     # Calcular a média dos tempos de treino e power usage
     avg_train_time = np.mean(train_times)
-    avg_power_usage = np.mean(train_powers)  # Nova linha
+    avg_power_usage = np.mean(train_powers)
     avg_metrics.append((avg_train_time, avg_power_usage))
-    print(f'Average Train Time: {avg_train_time} seconds')  # Nova linha
-    print(f'Average Power Usage: {avg_power_usage} W')  # Nova linha
+    print(f'Average Train Time: {avg_train_time} seconds')
+    print(f'Average Power Usage: {avg_power_usage} W')
 
     # Avaliar o melhor modelo no conjunto de teste
     y_true = []
@@ -225,21 +270,31 @@ for i in range(1):
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
 
+    # Calcular a matriz de confusão
+    cm = confusion_matrix(y_true, y_pred)
+
+    # Plotar a matriz de confusão
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(cm, annot=True, fmt='d')
+    plt.xlabel('Predicted')
+    plt.ylabel('Truth')
+
+    # Salvar a figura
+    plt.savefig(f'{parent_dir}/confusion_matrix.png')
+    plt.close()
+
+    # Salvar as métricas do melhor modelo
+    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
+        f.write(f'Accuracy: {accuracy}\n')
+        f.write(f'Precision: {precision}\n')
+        f.write(f'Recall: {recall}\n')
+        f.write(f'F1 Score: {f1}\n')
+
+    # salvar as saídas impressas em um arquivo
+    with open(f'{parent_dir}/output.txt', 'w') as f:
+        f.write(buffer.getvalue())
 
     pynvml.nvmlShutdown()
-
-    # Salvar a matriz de confusão e as métricas do melhor modelo no diretório pai 'leNet_'
-    plt.savefig(f'{parent_dir}/confusion_matrix.png')
-    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
-        f.write(f'Accuracy: {accuracy}\\n')
-        f.write(f'Precision: {precision}\\n')
-        f.write(f'Recall: {recall}\\n')
-        f.write(f'F1 Score: {f1}\\n')
-
-    # # Salvar os resultados do CarbonTracker
-    # tracker_results = tracker.get_data()
-    # df_tracker_results = pd.DataFrame({k: pd.Series(v) for k, v in tracker_results.items()})
-    # df_tracker_results.to_csv(f'{new_dir}/carbontracker_results.csv', index=False)
     tracker.stop()
     print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
 

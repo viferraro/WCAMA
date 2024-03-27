@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
@@ -14,6 +15,8 @@ from torchsummary import summary
 import pynvml
 import seaborn as sns
 import matplotlib.pyplot as plt
+import io
+import sys
 
 # Valor usado para inicializar o gerador de números aleatórios
 SEED = 10
@@ -27,7 +30,7 @@ for i in range(1):
     pynvml.nvmlInit()
 
     # Hiperparâmetros e inicializações
-    max_epochs = 30
+    max_epochs = 20
     tracker = CarbonTracker(epochs=max_epochs)
 
     # Carregamento e normalização do conjunto de dados CIFAR10
@@ -43,7 +46,6 @@ for i in range(1):
     train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
-
 
     # Definição da arquitetura da rede neural ResNet50
     class ResNet50(nn.Module):
@@ -137,7 +139,40 @@ for i in range(1):
 
     model = ResNet50().to(device)
     print(model)
+
+
+    # Defina uma função para criar um diretório com incremento se ele já existir
+    def create_incremented_dir(base_dir, subfolder_name):
+        i = 1
+        parent_dir = os.path.join(base_dir, f"{subfolder_name}_{i}")
+        while os.path.exists(parent_dir):
+            i += 1
+            parent_dir = os.path.join(base_dir, f"{subfolder_name}_{i}")
+        os.makedirs(parent_dir)
+        return parent_dir
+
+
+    # Crie o diretório pai 'leNet_x' com incremento se necessário
+    parent_dir = create_incremented_dir('resultados', 'leNet')
+    print(f'Diretório criado: {parent_dir}')
+
+    # Salvar a saída padrão original
+    original_stdout = sys.stdout
+
+    # Redirecionar a saída padrão para um buffer de string
+    sys.stdout = buffer = io.StringIO()
+
     summary(model, (3, 32, 32))
+
+    # Obter o valor da string do buffer
+    summary_str = buffer.getvalue()
+
+    # Restaurar a saída padrão original
+    sys.stdout = original_stdout
+
+    # Salvar a string de resumo em um arquivo
+    with open(f'{parent_dir}/model_summary.txt', 'w') as f:
+        f.write(summary_str)
 
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
@@ -182,6 +217,7 @@ for i in range(1):
             print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
 
+
     # Define uma função para criar um diretório se ele não existir
     def create_dir(base_dir, subfolder_name):
         base_dir = os.path.join(base_dir, subfolder_name)
@@ -200,9 +236,8 @@ for i in range(1):
     train_times = []
     train_powers = []
 
-    # Cria o diretório pai 'resNet_x' e o subdiretório 'resNetModelos'
+    # Cria o diretório pai 'resNet_x'
     parent_dir = create_dir('resultados', f'resNet_{i + 1}')
-    sub_dir = create_dir(parent_dir, 'resNetModelos')
 
     for i in range(num_models):
         start_time = datetime.now()
@@ -212,8 +247,9 @@ for i in range(1):
         flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-        train_loss, train_accuracy, val_loss, val_accuracy = train_and_validate(model, train_loader, val_loader,
-                                                                                criterion, optimizer, 30)
+        train_loss, train_accuracy, val_loss, val_accuracy = (train_and_validate
+                                                              (model, train_loader, val_loader,
+                                                               criterion, optimizer, 20))
         end_time = datetime.now()
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
@@ -221,7 +257,8 @@ for i in range(1):
         info = pynvml.nvmlDeviceGetPowerUsage(handle)
         power_usage = info / 1000.0
         train_powers.append(power_usage)
-        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy))
+        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds(), power_usage))
+
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
         avg_train_accuracy = np.mean([m[1] for m in metrics])
@@ -235,18 +272,18 @@ for i in range(1):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(), power_usage))
         models.append(model)
 
-        # Crie um novo diretório para cada modelo
-        new_dir = create_dir('resultados', f'resNet_{i + 1}')
+    # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
+    df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
+                                                    'avg_Val Accuracy', 'TrainTime', 'PowerUsage'])
 
-        # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
-        df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
-                                                        'avg_Val Accuracy', 'avg_TrainTime', 'avg_PowerUsage'])
+    # Adicione uma coluna 'Model' ao DataFrame
+    df_metrics.insert(0, 'Model', ['Modelo_' + str(i + 1) for i in range(num_models)])
 
-        # Salve as métricas de cada modelo em um arquivo separado no subdiretório 'resNetModelos'
-        df_metrics.to_excel(f'{sub_dir}/model_metrics_{i + 1}.xlsx', index=False)
+    # Salve as métricas de todos os modelos em um único arquivo no diretório pai 'resNet_x'
+    df_metrics.to_excel(f'{parent_dir}/models_metrics.xlsx', index=False)
 
     # Seleciona o melhor modelo com base na menor perda de validação.
     best_model_index = avg_valid_loss.index(min(avg_valid_loss))
@@ -258,10 +295,10 @@ for i in range(1):
     print('************************************************************************************************')
     # Calcular a média dos tempos de treino e power usage
     avg_train_time = np.mean(train_times)
-    avg_power_usage = np.mean(train_powers)  # Nova linha
+    avg_power_usage = np.mean(train_powers)
     avg_metrics.append((avg_train_time, avg_power_usage))
-    print(f'Average Train Time: {avg_train_time} seconds')  # Nova linha
-    print(f'Average Power Usage: {avg_power_usage} W')  # Nova linha
+    print(f'Average Train Time: {avg_train_time} seconds')
+    print(f'Average Power Usage: {avg_power_usage} W')
 
     # Avaliar o melhor modelo no conjunto de teste
     y_true = []
@@ -287,20 +324,31 @@ for i in range(1):
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
 
-    pynvml.nvmlShutdown()
+    # Calcular a matriz de confusão
+    cm = confusion_matrix(y_true, y_pred)
 
-    # Salva a matriz de confusão e as métricas do melhor modelo no diretório pai 'resNet_x'
+    # Plotar a matriz de confusão
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(cm, annot=True, fmt='d', cmap=plt.cm.Blues)
+    plt.xlabel('Predicted')
+    plt.ylabel('Truth')
+
+    # Salvar a figura
     plt.savefig(f'{parent_dir}/confusion_matrix.png')
-    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
-        f.write(f'Accuracy: {accuracy}\\n')
-        f.write(f'Precision: {precision}\\n')
-        f.write(f'Recall: {recall}\\n')
-        f.write(f'F1 Score: {f1}\\n')
+    plt.close()
 
-    # # Salvar os resultados do CarbonTracker
-    # tracker_results = tracker.get_data()
-    # df_tracker_results = pd.DataFrame({k: pd.Series(v) for k, v in tracker_results.items()})
-    # df_tracker_results.to_csv(f'{new_dir}/carbontracker_results.csv', index=False)
+    #  Salvar as métricas do melhor modelo no diretório pai 'resNet_'
+    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
+        f.write(f'Accuracy: {accuracy}\n')
+        f.write(f'Precision: {precision}\n')
+        f.write(f'Recall: {recall}\n')
+        f.write(f'F1 Score: {f1}\n')
+
+    # salvar as saídas impressas em um arquivo
+    with open(f'{parent_dir}/output.txt', 'w') as f:
+        f.write(buffer.getvalue())
+
+    pynvml.nvmlShutdown()
     tracker.stop()
     print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
 
