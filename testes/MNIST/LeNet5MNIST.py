@@ -25,7 +25,7 @@ SEED = 10
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
-for i in range(1):
+for i in range(2):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
@@ -109,6 +109,12 @@ for i in range(1):
     with open(f'{parent_dir}/model_summary.txt', 'w') as f:
         f.write(summary_str)
 
+    # Salvar a saída padrão original novamente
+    original_stdout = sys.stdout
+
+    # Redirecionar a saída padrão para um arquivo
+    sys.stdout = open(f'{parent_dir}/output.txt', 'w')
+
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
         model.train()
@@ -152,8 +158,8 @@ for i in range(1):
             print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
 
-    # Treinar 5 modelos e selecionar o melhor
-    num_models = 5
+    # Treinar 10 modelos e selecionar o melhor
+    num_models = 10
     avg_valid_loss = []
     best_model_idx = -1
     best_model = model
@@ -247,6 +253,9 @@ for i in range(1):
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
 
+    sys.stdout.close()
+    sys.stdout = original_stdout
+
     # Calcular a matriz de confusão
     cm = confusion_matrix(y_true, y_pred)
 
@@ -266,10 +275,6 @@ for i in range(1):
         f.write(f'Precision: {precision}\n')
         f.write(f'Recall: {recall}\n')
         f.write(f'F1 Score: {f1}\n')
-
-    # salvar as saídas impressas em um arquivo
-    with open(f'{parent_dir}/output.txt', 'w') as f:
-        f.write(buffer.getvalue())
 
     pynvml.nvmlShutdown()
     tracker.stop()

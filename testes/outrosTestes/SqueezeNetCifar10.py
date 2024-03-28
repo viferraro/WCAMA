@@ -18,7 +18,6 @@ import matplotlib.pyplot as plt
 import io
 import sys
 
-
 # Valor usado para inicializar o gerador de números aleatórios
 SEED = 10
 
@@ -33,59 +32,98 @@ for i in range(1):
     # Hiperparâmetros e inicializações
     max_epochs = 20
     tracker = CarbonTracker(epochs=max_epochs)
+    criterion = nn.CrossEntropyLoss()
 
-    # Carregamento e normalização do conjunto de dados MNIST
+    # Carregamento e normalização do conjunto de dados CIFAR10
     transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.5,), (0.5,))
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    full_train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-    test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-
+    full_train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+    test_dataset = datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
     train_size = int(0.8 * len(full_train_dataset))
     val_size = len(full_train_dataset) - train_size
     train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
     # Definição da arquitetura da rede neural AlexNet
-    class AlexNet(nn.Module):
-        def __init__(self):
-            super(AlexNet, self).__init__()
-            self.conv1 = nn.Conv2d(1, 96, 3, padding=1)
-            self.conv2 = nn.Conv2d(96, 256, 3, padding=1)
-            # self.conv3 = nn.Conv2d(256, 384, 3, padding=1)  # Removido para reduzir a complexidade
-            # self.conv4 = nn.Conv2d(384, 384, 3, padding=1)  # Removido para reduzir a complexidade
-            self.conv5 = nn.Conv2d(256, 256, 3, padding=1)  # Modificado para aceitar a saída de conv2
-            self.fc1   = nn.Linear(256*3*3, 4608)
-            self.fc2   = nn.Linear(4608, 4608)
-            self.fc3   = nn.Linear(4608, 10)
-            self.pool = nn.MaxPool2d(2, 2)
-            self.dropout = nn.Dropout(0.5)
-            self.batchnorm1 = nn.BatchNorm2d(96)
-            self.batchnorm2 = nn.BatchNorm2d(256)
-            # self.batchnorm3 = nn.BatchNorm2d(384)  # Removido para reduzir a complexidade
-            # self.batchnorm4 = nn.BatchNorm2d(384)  # Removido para reduzir a complexidade
-            self.batchnorm5 = nn.BatchNorm2d(256)
+    class Fire(nn.Module):
+        def __init__(self, inplanes, squeeze_planes, expand1x1_planes, expand3x3_planes):
+            super(Fire, self).__init__()
+            self.inplanes = inplanes
+            self.squeeze = nn.Conv2d(inplanes, squeeze_planes, kernel_size=1)
+            self.squeeze_activation = nn.ReLU(inplace=True)
+            self.expand1x1 = nn.Conv2d(squeeze_planes, expand1x1_planes, kernel_size=1)
+            self.expand1x1_activation = nn.ReLU(inplace=True)
+            self.expand3x3 = nn.Conv2d(squeeze_planes, expand3x3_planes, kernel_size=3, padding=1)
+            self.expand3x3_activation = nn.ReLU(inplace=True)
 
         def forward(self, x):
-            x = self.pool(torch.relu(self.batchnorm1(self.conv1(x))))
-            x = self.pool(torch.relu(self.batchnorm2(self.conv2(x))))
-            # x = torch.relu(self.batchnorm3(self.conv3(x)))  # Removido para reduzir a complexidade
-            # x = torch.relu(self.batchnorm4(self.conv4(x)))  # Removido para reduzir a complexidade
-            x = self.pool(torch.relu(self.batchnorm5(self.conv5(x))))
-            x = x.view(-1, 256*3*3)
-            x = torch.relu(self.fc1(x))
-            x = self.dropout(x)
-            x = torch.relu(self.fc2(x))
-            x = self.dropout(x)
-            x = self.fc3(x)
-            output = F.log_softmax(x, dim=1)
-            return output
+            x = self.squeeze_activation(self.squeeze(x))
+            return torch.cat([
+                self.expand1x1_activation(self.expand1x1(x)),
+                self.expand3x3_activation(self.expand3x3(x))
+            ], 1)
 
-    model = AlexNet().to(device)
+
+    class SqueezeNet(nn.Module):
+        def __init__(self, version=1.0, num_classes=10):
+            super(SqueezeNet, self).__init__()
+            if version not in [1.0, 1.1]:
+                raise ValueError("Unsupported SqueezeNet version {version}:"
+                                 "1.0 or 1.1 expected".format(version=version))
+            self.num_classes = num_classes
+            if version == 1.0:
+                self.features = nn.Sequential(
+                    nn.Conv2d(3, 96, kernel_size=7, stride=2),
+                    nn.ReLU(inplace=True),
+                    nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+                    Fire(96, 16, 64, 64),
+                    Fire(128, 16, 64, 64),
+                    Fire(128, 32, 128, 128),
+                    nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+                    Fire(256, 32, 128, 128),
+                    Fire(256, 48, 192, 192),
+                    Fire(384, 48, 192, 192),
+                    Fire(384, 64, 256, 256),
+                    nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+                    Fire(512, 64, 256, 256),
+                )
+            else:
+                self.features = nn.Sequential(
+                    nn.Conv2d(3, 64, kernel_size=3, stride=2),
+                    nn.ReLU(inplace=True),
+                    nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+                    Fire(64, 16, 64, 64),
+                    Fire(128, 16, 64, 64),
+                    nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+                    Fire(128, 32, 128, 128),
+                    Fire(256, 32, 128, 128),
+                    nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+                    Fire(256, 48, 192, 192),
+                    Fire(384, 48, 192, 192),
+                    Fire(384, 64, 256, 256),
+                    Fire(512, 64, 256, 256),
+                )
+            final_conv = nn.Conv2d(512, self.num_classes, kernel_size=1)
+            self.classifier = nn.Sequential(
+                nn.Dropout(p=0.5),
+                final_conv,
+                nn.ReLU(inplace=True),
+                nn.AdaptiveAvgPool2d((1, 1))
+            )
+
+        def forward(self, x):
+            x = self.features(x)
+            x = self.classifier(x)
+            return torch.flatten(x, 1)
+
+
+    model = SqueezeNet().to(device)
     print(model)
+
 
     # Defina uma função para criar um diretório com incremento se ele já existir
     def create_incremented_dir(base_dir, subfolder_name):
@@ -97,8 +135,8 @@ for i in range(1):
         os.makedirs(parent_dir)
         return parent_dir
 
-    # Crie o diretório pai 'alexNetMNIST_' com incremento se necessário
-    parent_dir = create_incremented_dir('resultados', 'alexNetMNIST')
+    # Crie o diretório pai 'leNet_x' com incremento se necessário
+    parent_dir = create_incremented_dir('resultados', 'SqueezeNet')
     print(f'Diretório criado: {parent_dir}')
 
     # Salvar a saída padrão original
@@ -107,8 +145,7 @@ for i in range(1):
     # Redirecionar a saída padrão para um buffer de string
     sys.stdout = buffer = io.StringIO()
 
-    # Chamar a função summary
-    summary(model, (1, 28, 28))
+    summary(model, (3, 32, 32))
 
     # Obter o valor da string do buffer
     summary_str = buffer.getvalue()
@@ -119,6 +156,12 @@ for i in range(1):
     # Salvar a string de resumo em um arquivo
     with open(f'{parent_dir}/model_summary.txt', 'w') as f:
         f.write(summary_str)
+
+    # Salvar a saída padrão original novamente
+    original_stdout = sys.stdout
+
+    # Redirecionar a saída padrão para um arquivo
+    sys.stdout = open(f'{parent_dir}/output.txt', 'w')
 
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
@@ -160,16 +203,8 @@ for i in range(1):
                     correct += (predicted == labels).sum().item()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         return train_loss, train_accuracy, val_loss, val_accuracy
-
-
-    # # Define uma função para criar um diretório se ele não existir
-    # def create_dir(base_dir, subfolder_name):
-    #     base_dir = os.path.join(base_dir, subfolder_name)
-    #     if not os.path.exists(base_dir):
-    #         os.makedirs(base_dir)
-    #     return base_dir
 
     # Treinar 5 modelos e selecionar o melhor
     num_models = 3
@@ -182,14 +217,11 @@ for i in range(1):
     train_times = []
     train_powers = []
 
-    # # Cria o diretório pai 'alexNet_x'
-    # parent_dir = create_dir('resultados', f'alexNet_{i + 1}')
-
     for i in range(num_models):
         start_time = datetime.now()
         print(f'Training model {i+1}/{num_models}')
-        input = torch.randn(1, 1, 28, 28).to(device)
-        model = AlexNet().to(device)
+        input = torch.randn(1, 3, 32, 32).to(device)
+        model = SqueezeNet().to(device)
         flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
@@ -197,6 +229,7 @@ for i in range(1):
                                                               (model, train_loader, val_loader,
                                                                criterion, optimizer, 20))
         end_time = datetime.now()
+
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)
@@ -260,7 +293,7 @@ for i in range(1):
 
     # Calcular métricas
     accuracy = accuracy_score(y_true, y_pred)
-    precision = precision_score(y_true, y_pred, average='macro')
+    precision = precision_score(y_true, y_pred, average='macro', zero_division=1)
     recall = recall_score(y_true, y_pred, average='macro')
     f1 = f1_score(y_true, y_pred, average='macro')
 
@@ -270,12 +303,15 @@ for i in range(1):
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
 
+    sys.stdout.close()
+    sys.stdout = original_stdout
+
     # Calcular a matriz de confusão
     cm = confusion_matrix(y_true, y_pred)
 
     # Plotar a matriz de confusão
     plt.figure(figsize=(10, 7))
-    sns.heatmap(cm, annot=True, fmt='d')
+    sns.heatmap(cm, annot=True, fmt='d', cmap=plt.cm.Blues)
     plt.xlabel('Predicted')
     plt.ylabel('Truth')
 
@@ -289,10 +325,6 @@ for i in range(1):
         f.write(f'Precision: {precision}\n')
         f.write(f'Recall: {recall}\n')
         f.write(f'F1 Score: {f1}\n')
-
-    # salvar as saídas impressas em um arquivo
-    with open(f'{parent_dir}/output.txt', 'w') as f:
-        f.write(buffer.getvalue())
 
     pynvml.nvmlShutdown()
     tracker.stop()
