@@ -1,0 +1,18 @@
+2024-03-28 21:39:32 - CarbonTracker: The following components were found: GPU with device(s) NVIDIA GeForce RTX 3060. CPU with device(s) cpu:0.
+2024-03-28 21:39:39 - CarbonTracker: Live carbon intensity could not be fetched at detected location: Nova Iguaçu, Rio de Janeiro, BR. Defaulted to average carbon intensity for BR in 2021 of 141.77 gCO2/kWh. at detected location: Nova Iguaçu, Rio de Janeiro, BR.
+2024-03-28 21:39:39 - CarbonTracker: 
+Predicted consumption for 20 epoch(s):
+	Time:	0:02:16
+	Energy:	0.002803173755 kWh
+	CO2eq:	0.397417884784 g
+	This is equivalent to:
+	0.003696910556 km travelled by car
+2024-03-28 21:42:13 - CarbonTracker: Average carbon intensity during training was 141.77 gCO2/kWh at detected location: Nova Iguaçu, Rio de Janeiro, BR.
+2024-03-28 21:42:13 - CarbonTracker: 
+Actual consumption for 20 epoch(s):
+	Time:	0:02:15
+	Energy:	0.004522127503 kWh
+	CO2eq:	0.641121280358 g
+	This is equivalent to:
+	0.005963918887 km travelled by car
+2024-03-28 21:42:13 - CarbonTracker: Finished monitoring.

@@ -10,6 +10,7 @@ import numpy as np
 import os
 from datetime import datetime
 from carbontracker.tracker import CarbonTracker
+from carbontracker import parser
 from thop import profile
 from torchsummary import summary
 import pynvml
@@ -26,13 +27,23 @@ SEED = 10
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Dispositivo utilizado: {device}')
 
-for i in range(2):
+for i in range(3):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
 
     # Hiperparâmetros e inicializações
     max_epochs = 20
-    tracker = CarbonTracker(epochs=max_epochs)
+    tracker = CarbonTracker(epochs=max_epochs, monitor_epochs=-1, interpretable=True, log_dir="./resultados/alexNet2/")
+    parser.print_aggregate(log_dir="./resultados/alexNet2/")
+    logs = parser.parse_all_logs(log_dir="./resultados/alexNet2/")
+    first_log = logs[0]
+
+    print(f"Output file name: {first_log['output_filename']}")
+    print(f"Standard file name: {first_log['standard_filename']}")
+    print(f"Stopped early: {first_log['early_stop']}")
+    print(f"Measured consumption: {first_log['actual']}")
+    print(f"Predicted consumption: {first_log['pred']}")
+    print(f"Measured GPU devices: {first_log['components']['gpu']['devices']}")
 
     # Carregamento e normalização do conjunto de dados MNIST
     transform = transforms.Compose([
@@ -198,6 +209,7 @@ for i in range(2):
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        print("Device: ", nvmlDeviceGetName(handle))
         info = pynvml.nvmlDeviceGetPowerUsage(handle)
         power_usage = info / 1000.0
         train_powers.append(power_usage)
