@@ -32,18 +32,18 @@ for i in range(3):
 
     # Definições iniciais
     max_epochs = 20
-    tracker = CarbonTracker(epochs=max_epochs, monitor_epochs=-1, interpretable=True, log_dir="./resultados/leNet2/",
+    tracker = CarbonTracker(epochs=max_epochs, monitor_epochs=-1, interpretable=True, log_dir="./resultados/leNet3/",
                             log_file_prefix="carbontracker")
-    parser.print_aggregate(log_dir="./resultados/leNet2/")
-    # logs = parser.parse_all_logs(log_dir="./resultados/leNet2/")
-    # first_log = logs[0]
-    #
-    # print(f"Output file name: {first_log['output_filename']}")
-    # print(f"Standard file name: {first_log['standard_filename']}")
-    # print(f"Stopped early: {first_log['early_stop']}")
-    # print(f"Measured consumption: {first_log['actual']}")
-    # print(f"Predicted consumption: {first_log['pred']}")
-    # print(f"Measured GPU devices: {first_log['components']['gpu']['devices']}")
+    parser.print_aggregate(log_dir="./resultados/leNet3/")
+    logs = parser.parse_all_logs(log_dir="./resultados/leNet3/")
+    first_log = logs[0]
+
+    print(f"Output file name: {first_log['output_filename']}")
+    print(f"Standard file name: {first_log['standard_filename']}")
+    print(f"Stopped early: {first_log['early_stop']}")
+    print(f"Measured consumption: {first_log['actual']}")
+    print(f"Predicted consumption: {first_log['pred']}")
+    print(f"Measured GPU devices: {first_log['components']['gpu']['devices']}")
 
     # Carregar e normalizar o MNIST
     transform = transforms.Compose([
