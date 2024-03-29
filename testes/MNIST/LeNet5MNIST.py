@@ -32,10 +32,24 @@ for i in range(3):
 
     # Definições iniciais
     max_epochs = 20
-    tracker = CarbonTracker(epochs=max_epochs, monitor_epochs=-1, interpretable=True, log_dir="./resultados/leNet3/",
-                            log_file_prefix="carbontracker")
-    parser.print_aggregate(log_dir="./resultados/leNet3/")
-    logs = parser.parse_all_logs(log_dir="./resultados/leNet3/")
+    train_times = []
+    train_powers = []
+    tracker = CarbonTracker(epochs=max_epochs, monitor_epochs=-1, interpretable=True, log_dir="./resultados/len1/",
+                            log_file_prefix="cbt")
+
+    log_dir = "./resultados/len1/"
+    all_logs = os.listdir(log_dir)
+    std_logs = [f for f in all_logs if f.endswith('_carbontracker.log')]
+    missing_logs = ['epoch_{}_carbontracker.log'.format(i) for i in range(max_epochs) if
+                    'epoch_{}_carbontracker.log'.format(i) not in all_logs]
+    for f in missing_logs:
+        log_file = f + "_carbontracker.log"
+        if log_file in std_logs:
+            std_logs.remove(log_file)
+
+    # Agora você pode chamar as funções do parser com segurança
+    parser.print_aggregate(log_dir="./resultados/len1/")
+    logs = parser.parse_all_logs(log_dir="./resultados/len1/")
     first_log = logs[0]
 
     print(f"Output file name: {first_log['output_filename']}")
@@ -130,8 +144,9 @@ for i in range(3):
     # Função para treinar e validar um modelo
     def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
         model.train()
+        start_time = datetime.now()
+        tracker.epoch_start()
         for epoch in range(max_epochs):
-            tracker.epoch_start()
             running_loss = 0.0
             correct = 0
             total = 0
@@ -146,9 +161,17 @@ for i in range(3):
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
+                # Medir o consumo de energia
+                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+                info = pynvml.nvmlDeviceGetPowerUsage(handle)
+                power_usage = info / 1000.0
+                train_powers.append(power_usage)
+                # print(f"Power usage during epoch {epoch + 1}, iteration {i + 1}: {power_usage} W")
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
-            tracker.epoch_end()
+            end_time = datetime.now()
+            train_time = (end_time - start_time)
+            train_times.append(train_time.total_seconds())
             print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
@@ -165,10 +188,12 @@ for i in range(3):
                     _, predicted = torch.max(outputs.data, 1)
                     total += labels.size(0)
                     correct += (predicted == labels).sum().item()
+            tracker.epoch_end()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
             print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
-        return train_loss, train_accuracy, val_loss, val_accuracy
+        tracker.epoch_end()
+        return train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage
 
     # Treinar 10 modelos e selecionar o melhor
     num_models = 10
@@ -178,30 +203,19 @@ for i in range(3):
     models = []
     metrics = []
     avg_metrics = []
-    train_times = []
-    train_powers = []
+
 
     for i in range(num_models):
-        start_time = datetime.now()
         print(f'Training model {i + 1}/{num_models}')
         input = torch.randn(1, 1, 28, 28).to(device)
         model = LeNet5().to(device)
         flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-        train_loss, train_accuracy, val_loss, val_accuracy = (train_and_validate
+        train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage = (train_and_validate
                                                               (model, train_loader, val_loader,
                                                                criterion, optimizer, 20))
-        end_time = datetime.now()
-        train_time = (end_time - start_time)
-        train_times.append(train_time.total_seconds())
-        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-        name = pynvml.nvmlDeviceGetName(handle)
-        print("Device: ", name)
-        info = pynvml.nvmlDeviceGetPowerUsage(handle)
-        power_usage = info / 1000.0
-        train_powers.append(power_usage)
-        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds()))
+        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds(), power_usage))
 
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
@@ -216,7 +230,7 @@ for i in range(3):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(), power_usage))
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
         models.append(model)
 
     # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
@@ -239,7 +253,7 @@ for i in range(3):
     # Calcular a média dos tempos de treino e power usage
     avg_train_time = np.mean(train_times)
     avg_power_usage = np.mean(train_powers)
-    avg_metrics.append((avg_train_time, avg_power_usage))
+    # avg_metrics.append((avg_train_time, avg_power_usage))
     print(f'Average Train Time: {avg_train_time} seconds')
     print(f'Average Power Usage: {avg_power_usage} W')
 
