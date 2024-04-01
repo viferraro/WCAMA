@@ -43,7 +43,7 @@ for i in range(1):
 
 
     # Crie o diretório pai 'alexNetMNIST_' com incremento se necessário
-    parent_dir = create_incremented_dir('resultados3', 'LeNetMNIST')
+    parent_dir = create_incremented_dir('resultados6', 'LeNetMNIST')
     print(f'Diretório criado: {parent_dir}')
 
     # Crie o diretório 'AlexNetCarbon'
@@ -131,7 +131,8 @@ for i in range(1):
     # Redirecionar a saída padrão para um buffer de string
     sys.stdout = buffer = io.StringIO()
 
-    summary(model, (1, 28, 28))  # Alterar o tamanho de entrada para corresponder às imagens MNIST
+    # Chamar a função summary
+    summary(model, (1, 28, 28))
 
     # Obter o valor da string do buffer
     summary_str = buffer.getvalue()
@@ -149,12 +150,13 @@ for i in range(1):
     # Redirecionar a saída padrão para um arquivo
     sys.stdout = open(f'{parent_dir}/output.txt', 'w')
 
+
     # Função para treinar e validar um modelo
-    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
+    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
         model.train()
         start_time = datetime.now()
         tracker.epoch_start()
-        for epoch in range(max_epochs):
+        for epoch in range(epochs):
             tracker.epoch_start()
             running_loss = 0.0
             correct = 0
@@ -175,10 +177,9 @@ for i in range(1):
                 info = pynvml.nvmlDeviceGetPowerUsage(handle)
                 power_usage = info / 1000.0
                 train_powers.append(power_usage)
-                # print(f"Power usage during epoch {epoch + 1}, iteration {i + 1}: {power_usage} W")
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
             model.eval()
@@ -197,14 +198,15 @@ for i in range(1):
             tracker.epoch_end()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         end_time = datetime.now()
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
         tracker.epoch_end()
         return train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage
 
-    # Treinar 10 modelos e selecionar o melhor
+
+    # Treinamento e seleção do melhor modelo entre 10 candidatos
     num_models = 10
     avg_valid_loss = []
     best_model_idx = -1
@@ -212,20 +214,17 @@ for i in range(1):
     models = []
     metrics = []
     avg_metrics = []
-
-
     for i in range(num_models):
+        print("______________________________________________________________________________________________________")
         print(f'Training model {i + 1}/{num_models}')
         input = torch.randn(1, 1, 28, 28).to(device)
         model = LeNet5().to(device)
         flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-        train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage = (train_and_validate
-                                                              (model, train_loader, val_loader,
-                                                               criterion, optimizer, 20))
+        train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage = (
+            train_and_validate(model, train_loader, val_loader, criterion, optimizer, 20))
         metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds(), power_usage))
-
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
         avg_train_accuracy = np.mean([m[1] for m in metrics])
@@ -239,7 +238,8 @@ for i in range(1):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time, power_usage))
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(),
+             power_usage))
         models.append(model)
 
     # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
@@ -247,7 +247,8 @@ for i in range(1):
                                                     'avg_Val Accuracy', 'TrainTime', 'PowerUsage'])
 
     # Adiciona uma coluna 'Modelo_x' ao DataFrame
-    df_metrics.insert(0, 'Model', ['Modelo_' + str(i + 1) for i in range(num_models)])
+    modelos = ['Modelo_' + str(i + 1) for i in range(num_models)]
+    df_metrics.insert(0, 'Model', modelos)
 
     # Salva as métricas de todos os modelos em um único arquivo no diretório pai 'leNet_x'
     df_metrics.to_excel(f'{parent_dir}/models_metrics.xlsx', index=False)
@@ -256,7 +257,8 @@ for i in range(1):
     best_model_index = avg_valid_loss.index(min(avg_valid_loss))
     best_model = models[best_model_index]
     print('************************************************************************************************')
-    print(f'O melhor modelo é o Modelo {best_model_index+1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
+    print(
+        f'O melhor modelo é o Modelo {best_model_index + 1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
 
     print('************************************************************************************************')
     # Calcular a média dos tempos de treino e power usage
@@ -317,4 +319,3 @@ for i in range(1):
     tracker.stop()
     print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
 
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')

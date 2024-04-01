@@ -301,7 +301,7 @@ for i in range(1):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time,
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(),
              power_usage))
         models.append(model)
 
