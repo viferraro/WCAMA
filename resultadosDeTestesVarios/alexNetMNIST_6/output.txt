@@ -1,0 +1,3 @@
+Training model 1/10
+Epoch 1, Train Loss: 0.4662, Train Accuracy: 0.8396
+Epoch 1, Val Loss: 0.0887, Val Accuracy: 0.9761

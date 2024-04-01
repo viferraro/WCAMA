@@ -1,0 +1,57 @@
+LeNet-5 (resultado energia NVML):
+Average Train Time: 0:02:40
+Average Power Usage: 39.3351 W
+Accuracy: 0.9875
+Precision: 0.9875392871134544
+Recall: 0.9873795577821234
+F1 Score: 0.9874397743284895
+
+Resultado CarbonTracker:
+CarbonTracker: Live carbon intensity could not be fetched at detected location: Nova Iguaçu, Rio de Janeiro, BR. Defaulted to average carbon intensity for BR in 2021 of 141.77 gCO2/kWh. at detected location: Nova Iguaçu, Rio de Janeiro, BR.
+CarbonTracker: 
+Predicted consumption for 20 epoch(s):
+	Time:	0:02:18
+	Energy:	0.003037818933 kWh
+	CO2eq:	0.430684531245 g
+	This is equivalent to:
+	0.004006367733 km travelled by car
+CarbonTracker: WARNING - Epoch duration is too short for a measurement to be collected.
+
+CarbonTracker: Average carbon intensity during training was 141.77 gCO2/kWh at detected location: Nova Iguaçu, Rio de Janeiro, BR.
+CarbonTracker: 
+Actual consumption for 20 epoch(s):
+	Time:	0:02:16
+	Energy:	0.004546318237 kWh
+	CO2eq:	0.644550903715 g
+	This is equivalent to:
+	0.005995822360 km travelled by car
+CarbonTracker: Finished monitoring.
+
+************************************************************************************************
+AlexNet (resultado energia NVML):
+Average Train Time: 0:08:05
+Average Power Usage: 68.77250000000001 W
+Accuracy: 0.9904
+Precision: 0.9904974413441454
+Recall: 0.9902002873243332
+F1 Score: 0.9903058159633202
+
+Resultado CarbonTracker:
+CarbonTracker: Live carbon intensity could not be fetched at detected location: Nova Iguaçu, Rio de Janeiro, BR. Defaulted to average carbon intensity for BR in 2021 of 141.77 gCO2/kWh. at detected location: Nova Iguaçu, Rio de Janeiro, BR.
+CarbonTracker: 
+Predicted consumption for 20 epoch(s):
+	Time:	0:07:47
+	Energy:	0.020174071496 kWh
+	CO2eq:	2.860164057495 g
+	This is equivalent to:
+	0.026606177279 km travelled by car
+
+CarbonTracker: Average carbon intensity during training was 141.77 gCO2/kWh at detected location: Nova Iguaçu, Rio de Janeiro, BR.
+CarbonTracker: 
+Actual consumption for 20 epoch(s):
+	Time:	0:07:38
+	Energy:	0.023229865262 kWh
+	CO2eq:	3.293396957394 g
+	This is equivalent to:
+	0.030636250766 km travelled by car
+CarbonTracker: Finished monitoring.

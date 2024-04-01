@@ -1,0 +1,52 @@
+2024-03-31 12:47:36 - carbontracker version 1.2.5
+2024-03-31 12:47:36 - Only predicted and actual consumptions are multiplied by a PUE coefficient of 1.55 (Rhonda Ascierto, 2022, Uptime Institute Global Data Center Survey).
+2024-03-31 12:47:36 - The following components were found: GPU with device(s) NVIDIA GeForce RTX 3060. CPU with device(s) cpu:0.
+2024-03-31 12:47:36 - Monitoring thread started.
+2024-03-31 12:55:37 - Epoch 21:
+2024-03-31 12:55:37 - Duration: 0:00:23.96
+2024-03-31 12:55:37 - Average power usage (W) for gpu: [81.61033333]
+2024-03-31 12:55:37 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:03:37 - Epoch 42:
+2024-03-31 13:03:37 - Duration: 0:00:23.79
+2024-03-31 13:03:37 - Average power usage (W) for gpu: [82.153]
+2024-03-31 13:03:37 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:11:33 - Epoch 63:
+2024-03-31 13:11:33 - Duration: 0:00:23.79
+2024-03-31 13:11:33 - Average power usage (W) for gpu: [87.9645]
+2024-03-31 13:11:33 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:19:29 - Epoch 84:
+2024-03-31 13:19:29 - Duration: 0:00:23.83
+2024-03-31 13:19:29 - Average power usage (W) for gpu: [87.73333333]
+2024-03-31 13:19:29 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:27:26 - Epoch 105:
+2024-03-31 13:27:26 - Duration: 0:00:23.81
+2024-03-31 13:27:26 - Average power usage (W) for gpu: [87.993]
+2024-03-31 13:27:26 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:35:23 - Epoch 126:
+2024-03-31 13:35:23 - Duration: 0:00:23.88
+2024-03-31 13:35:23 - Average power usage (W) for gpu: [87.7685]
+2024-03-31 13:35:23 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:43:21 - Epoch 147:
+2024-03-31 13:43:21 - Duration: 0:00:23.96
+2024-03-31 13:43:21 - Average power usage (W) for gpu: [87.642]
+2024-03-31 13:43:21 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:51:20 - Epoch 168:
+2024-03-31 13:51:20 - Duration: 0:00:23.81
+2024-03-31 13:51:20 - Average power usage (W) for gpu: [82.57666667]
+2024-03-31 13:51:20 - Average power usage (W) for cpu: 0.0
+2024-03-31 13:59:18 - Epoch 189:
+2024-03-31 13:59:18 - Duration: 0:00:23.97
+2024-03-31 13:59:18 - Average power usage (W) for gpu: [85.60666667]
+2024-03-31 13:59:18 - Average power usage (W) for cpu: 0.0
+2024-03-31 14:07:16 - Epoch 210:
+2024-03-31 14:07:16 - Duration: 0:00:23.81
+2024-03-31 14:07:16 - Average power usage (W) for gpu: [87.9175]
+2024-03-31 14:07:16 - Average power usage (W) for cpu: 0.0
+2024-03-31 14:07:18 - Training was interrupted before all 20 epochs were monitored.
+2024-03-31 14:07:18 - Carbon intensities (gCO2/kWh) fetched every 900 s at detected location Rio de Janeiro, Rio de Janeiro, BR: [141.77426]
+2024-03-31 14:07:18 - Average carbon intensity during training was 141.77 gCO2/kWh at detected location: Rio de Janeiro, Rio de Janeiro, BR.
+2024-03-31 14:07:18 - Monitoring thread ended.
+2024-03-31 14:07:18 - carbontracker version 1.2.5
+2024-03-31 14:07:18 - Only predicted and actual consumptions are multiplied by a PUE coefficient of 1.55 (Rhonda Ascierto, 2022, Uptime Institute Global Data Center Survey).
+2024-03-31 14:07:18 - The following components were found: GPU with device(s) NVIDIA GeForce RTX 3060. CPU with device(s) cpu:0.
+2024-03-31 14:07:18 - Monitoring thread started.

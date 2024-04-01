@@ -1,0 +1,873 @@
+Training model 1/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.5361, Train Accuracy: 0.8128
+Epoch 1, Val Loss: 0.0733, Val Accuracy: 0.9769
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0785, Train Accuracy: 0.9764
+Epoch 2, Val Loss: 0.0712, Val Accuracy: 0.9785
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0564, Train Accuracy: 0.9838
+Epoch 3, Val Loss: 0.0495, Val Accuracy: 0.9852
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0509, Train Accuracy: 0.9852
+Epoch 4, Val Loss: 0.0487, Val Accuracy: 0.9861
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0394, Train Accuracy: 0.9886
+Epoch 5, Val Loss: 0.0668, Val Accuracy: 0.9812
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0357, Train Accuracy: 0.9895
+Epoch 6, Val Loss: 0.0528, Val Accuracy: 0.9854
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0316, Train Accuracy: 0.9911
+Epoch 7, Val Loss: 0.0363, Val Accuracy: 0.9896
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0277, Train Accuracy: 0.9917
+Epoch 8, Val Loss: 0.0345, Val Accuracy: 0.9903
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0249, Train Accuracy: 0.9928
+Epoch 9, Val Loss: 0.0357, Val Accuracy: 0.9907
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0196, Train Accuracy: 0.9942
+Epoch 10, Val Loss: 0.0338, Val Accuracy: 0.9911
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0209, Train Accuracy: 0.9938
+Epoch 11, Val Loss: 0.0346, Val Accuracy: 0.9911
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0178, Train Accuracy: 0.9949
+Epoch 12, Val Loss: 0.0325, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0174, Train Accuracy: 0.9951
+Epoch 13, Val Loss: 0.0353, Val Accuracy: 0.9909
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0157, Train Accuracy: 0.9960
+Epoch 14, Val Loss: 0.0349, Val Accuracy: 0.9915
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0189, Train Accuracy: 0.9944
+Epoch 15, Val Loss: 0.0312, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0134, Train Accuracy: 0.9958
+Epoch 16, Val Loss: 0.0386, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0134, Train Accuracy: 0.9964
+Epoch 17, Val Loss: 0.0290, Val Accuracy: 0.9933
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0116, Train Accuracy: 0.9966
+Epoch 18, Val Loss: 0.0367, Val Accuracy: 0.9907
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0145, Train Accuracy: 0.9956
+Epoch 19, Val Loss: 0.0318, Val Accuracy: 0.9921
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0118, Train Accuracy: 0.9965
+Epoch 20, Val Loss: 0.0555, Val Accuracy: 0.9851
+Model 1: Avg Train Loss: 0.0118, Avg Train Accuracy: 0.9965, Avg Val Loss: 0.0555, Avg Val Accuracy: 0.9851
+Tempo de treino: 0:07:58.688363
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 87.512 W
+Training model 2/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.4778, Train Accuracy: 0.8345
+Epoch 1, Val Loss: 0.0574, Val Accuracy: 0.9811
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0726, Train Accuracy: 0.9790
+Epoch 2, Val Loss: 0.0487, Val Accuracy: 0.9869
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0546, Train Accuracy: 0.9848
+Epoch 3, Val Loss: 0.0436, Val Accuracy: 0.9866
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0468, Train Accuracy: 0.9865
+Epoch 4, Val Loss: 0.0537, Val Accuracy: 0.9840
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0412, Train Accuracy: 0.9882
+Epoch 5, Val Loss: 0.0514, Val Accuracy: 0.9848
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0364, Train Accuracy: 0.9900
+Epoch 6, Val Loss: 0.0409, Val Accuracy: 0.9887
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0315, Train Accuracy: 0.9909
+Epoch 7, Val Loss: 0.0280, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0270, Train Accuracy: 0.9919
+Epoch 8, Val Loss: 0.0334, Val Accuracy: 0.9911
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0245, Train Accuracy: 0.9928
+Epoch 9, Val Loss: 0.0327, Val Accuracy: 0.9912
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0236, Train Accuracy: 0.9932
+Epoch 10, Val Loss: 0.0326, Val Accuracy: 0.9904
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0194, Train Accuracy: 0.9944
+Epoch 11, Val Loss: 0.0305, Val Accuracy: 0.9926
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0205, Train Accuracy: 0.9939
+Epoch 12, Val Loss: 0.0551, Val Accuracy: 0.9832
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0184, Train Accuracy: 0.9944
+Epoch 13, Val Loss: 0.0238, Val Accuracy: 0.9933
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0156, Train Accuracy: 0.9954
+Epoch 14, Val Loss: 0.0259, Val Accuracy: 0.9925
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0145, Train Accuracy: 0.9956
+Epoch 15, Val Loss: 0.0242, Val Accuracy: 0.9932
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0147, Train Accuracy: 0.9958
+Epoch 16, Val Loss: 0.0252, Val Accuracy: 0.9933
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0155, Train Accuracy: 0.9956
+Epoch 17, Val Loss: 0.0256, Val Accuracy: 0.9932
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0141, Train Accuracy: 0.9959
+Epoch 18, Val Loss: 0.0317, Val Accuracy: 0.9906
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0112, Train Accuracy: 0.9968
+Epoch 19, Val Loss: 0.0306, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0128, Train Accuracy: 0.9965
+Epoch 20, Val Loss: 0.0304, Val Accuracy: 0.9924
+Model 2: Avg Train Loss: 0.0123, Avg Train Accuracy: 0.9965, Avg Val Loss: 0.0430, Avg Val Accuracy: 0.9888
+Tempo de treino: 0:07:57.037348
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 87.941 W
+Training model 3/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.5679, Train Accuracy: 0.7972
+Epoch 1, Val Loss: 0.1675, Val Accuracy: 0.9516
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0794, Train Accuracy: 0.9778
+Epoch 2, Val Loss: 0.0649, Val Accuracy: 0.9818
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0560, Train Accuracy: 0.9834
+Epoch 3, Val Loss: 0.0603, Val Accuracy: 0.9828
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0488, Train Accuracy: 0.9860
+Epoch 4, Val Loss: 0.0374, Val Accuracy: 0.9885
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0411, Train Accuracy: 0.9878
+Epoch 5, Val Loss: 0.0344, Val Accuracy: 0.9901
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0332, Train Accuracy: 0.9907
+Epoch 6, Val Loss: 0.0489, Val Accuracy: 0.9861
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0305, Train Accuracy: 0.9911
+Epoch 7, Val Loss: 0.0319, Val Accuracy: 0.9915
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0293, Train Accuracy: 0.9921
+Epoch 8, Val Loss: 0.0333, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0244, Train Accuracy: 0.9928
+Epoch 9, Val Loss: 0.0354, Val Accuracy: 0.9902
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0246, Train Accuracy: 0.9930
+Epoch 10, Val Loss: 0.0315, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0201, Train Accuracy: 0.9941
+Epoch 11, Val Loss: 0.0341, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0192, Train Accuracy: 0.9946
+Epoch 12, Val Loss: 0.0424, Val Accuracy: 0.9884
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0189, Train Accuracy: 0.9946
+Epoch 13, Val Loss: 0.0304, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0168, Train Accuracy: 0.9949
+Epoch 14, Val Loss: 0.0427, Val Accuracy: 0.9890
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0161, Train Accuracy: 0.9950
+Epoch 15, Val Loss: 0.0382, Val Accuracy: 0.9902
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0148, Train Accuracy: 0.9955
+Epoch 16, Val Loss: 0.0305, Val Accuracy: 0.9920
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0143, Train Accuracy: 0.9959
+Epoch 17, Val Loss: 0.0276, Val Accuracy: 0.9929
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0160, Train Accuracy: 0.9951
+Epoch 18, Val Loss: 0.0292, Val Accuracy: 0.9924
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0131, Train Accuracy: 0.9960
+Epoch 19, Val Loss: 0.0453, Val Accuracy: 0.9889
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0118, Train Accuracy: 0.9966
+Epoch 20, Val Loss: 0.0290, Val Accuracy: 0.9922
+Model 3: Avg Train Loss: 0.0121, Avg Train Accuracy: 0.9965, Avg Val Loss: 0.0383, Avg Val Accuracy: 0.9899
+Tempo de treino: 0:07:54.027991
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 88.098 W
+Training model 4/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.7102, Train Accuracy: 0.7458
+Epoch 1, Val Loss: 0.1132, Val Accuracy: 0.9647
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0942, Train Accuracy: 0.9733
+Epoch 2, Val Loss: 0.1319, Val Accuracy: 0.9621
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0664, Train Accuracy: 0.9809
+Epoch 3, Val Loss: 0.0542, Val Accuracy: 0.9841
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0546, Train Accuracy: 0.9834
+Epoch 4, Val Loss: 0.0493, Val Accuracy: 0.9852
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0489, Train Accuracy: 0.9858
+Epoch 5, Val Loss: 0.0561, Val Accuracy: 0.9835
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0444, Train Accuracy: 0.9871
+Epoch 6, Val Loss: 0.0432, Val Accuracy: 0.9872
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0377, Train Accuracy: 0.9893
+Epoch 7, Val Loss: 0.0435, Val Accuracy: 0.9876
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0351, Train Accuracy: 0.9896
+Epoch 8, Val Loss: 0.0367, Val Accuracy: 0.9897
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0306, Train Accuracy: 0.9907
+Epoch 9, Val Loss: 0.0367, Val Accuracy: 0.9897
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0273, Train Accuracy: 0.9918
+Epoch 10, Val Loss: 0.0356, Val Accuracy: 0.9899
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0283, Train Accuracy: 0.9916
+Epoch 11, Val Loss: 0.0477, Val Accuracy: 0.9866
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0236, Train Accuracy: 0.9928
+Epoch 12, Val Loss: 0.0397, Val Accuracy: 0.9883
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0228, Train Accuracy: 0.9932
+Epoch 13, Val Loss: 0.0388, Val Accuracy: 0.9892
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0208, Train Accuracy: 0.9941
+Epoch 14, Val Loss: 0.0361, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0198, Train Accuracy: 0.9943
+Epoch 15, Val Loss: 0.0317, Val Accuracy: 0.9905
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0192, Train Accuracy: 0.9942
+Epoch 16, Val Loss: 0.0390, Val Accuracy: 0.9890
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0167, Train Accuracy: 0.9948
+Epoch 17, Val Loss: 0.0271, Val Accuracy: 0.9917
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0152, Train Accuracy: 0.9955
+Epoch 18, Val Loss: 0.0284, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0149, Train Accuracy: 0.9953
+Epoch 19, Val Loss: 0.0289, Val Accuracy: 0.9917
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0145, Train Accuracy: 0.9958
+Epoch 20, Val Loss: 0.0277, Val Accuracy: 0.9942
+Model 4: Avg Train Loss: 0.0127, Avg Train Accuracy: 0.9963, Avg Val Loss: 0.0357, Avg Val Accuracy: 0.9910
+Tempo de treino: 0:07:54.214610
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 88.037 W
+Training model 5/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.4427, Train Accuracy: 0.8465
+Epoch 1, Val Loss: 0.1090, Val Accuracy: 0.9693
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0730, Train Accuracy: 0.9794
+Epoch 2, Val Loss: 0.0552, Val Accuracy: 0.9844
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0519, Train Accuracy: 0.9850
+Epoch 3, Val Loss: 0.0357, Val Accuracy: 0.9895
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0456, Train Accuracy: 0.9864
+Epoch 4, Val Loss: 0.0372, Val Accuracy: 0.9895
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0369, Train Accuracy: 0.9898
+Epoch 5, Val Loss: 0.0359, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0351, Train Accuracy: 0.9902
+Epoch 6, Val Loss: 0.0288, Val Accuracy: 0.9928
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0279, Train Accuracy: 0.9920
+Epoch 7, Val Loss: 0.0316, Val Accuracy: 0.9915
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0237, Train Accuracy: 0.9931
+Epoch 8, Val Loss: 0.0307, Val Accuracy: 0.9917
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0224, Train Accuracy: 0.9938
+Epoch 9, Val Loss: 0.0285, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0210, Train Accuracy: 0.9938
+Epoch 10, Val Loss: 0.0261, Val Accuracy: 0.9921
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0200, Train Accuracy: 0.9943
+Epoch 11, Val Loss: 0.0354, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0183, Train Accuracy: 0.9948
+Epoch 12, Val Loss: 0.0313, Val Accuracy: 0.9912
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0157, Train Accuracy: 0.9953
+Epoch 13, Val Loss: 0.0209, Val Accuracy: 0.9944
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0163, Train Accuracy: 0.9949
+Epoch 14, Val Loss: 0.0394, Val Accuracy: 0.9899
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0140, Train Accuracy: 0.9959
+Epoch 15, Val Loss: 0.0234, Val Accuracy: 0.9933
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0141, Train Accuracy: 0.9958
+Epoch 16, Val Loss: 0.0251, Val Accuracy: 0.9933
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0127, Train Accuracy: 0.9958
+Epoch 17, Val Loss: 0.0313, Val Accuracy: 0.9916
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0127, Train Accuracy: 0.9959
+Epoch 18, Val Loss: 0.0287, Val Accuracy: 0.9925
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0136, Train Accuracy: 0.9962
+Epoch 19, Val Loss: 0.0309, Val Accuracy: 0.9927
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0109, Train Accuracy: 0.9967
+Epoch 20, Val Loss: 0.0253, Val Accuracy: 0.9938
+Model 5: Avg Train Loss: 0.0124, Avg Train Accuracy: 0.9964, Avg Val Loss: 0.0336, Avg Val Accuracy: 0.9915
+Tempo de treino: 0:07:54.389129
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 88.084 W
+Training model 6/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.5882, Train Accuracy: 0.7920
+Epoch 1, Val Loss: 0.0882, Val Accuracy: 0.9752
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0812, Train Accuracy: 0.9765
+Epoch 2, Val Loss: 0.0804, Val Accuracy: 0.9748
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0576, Train Accuracy: 0.9830
+Epoch 3, Val Loss: 0.0458, Val Accuracy: 0.9862
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0487, Train Accuracy: 0.9865
+Epoch 4, Val Loss: 0.0486, Val Accuracy: 0.9851
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0446, Train Accuracy: 0.9872
+Epoch 5, Val Loss: 0.0493, Val Accuracy: 0.9857
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0394, Train Accuracy: 0.9889
+Epoch 6, Val Loss: 0.0424, Val Accuracy: 0.9874
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0355, Train Accuracy: 0.9898
+Epoch 7, Val Loss: 0.0309, Val Accuracy: 0.9907
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0275, Train Accuracy: 0.9922
+Epoch 8, Val Loss: 0.0321, Val Accuracy: 0.9902
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0275, Train Accuracy: 0.9920
+Epoch 9, Val Loss: 0.0288, Val Accuracy: 0.9912
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0247, Train Accuracy: 0.9929
+Epoch 10, Val Loss: 0.0258, Val Accuracy: 0.9920
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0231, Train Accuracy: 0.9932
+Epoch 11, Val Loss: 0.0404, Val Accuracy: 0.9894
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0217, Train Accuracy: 0.9934
+Epoch 12, Val Loss: 0.0268, Val Accuracy: 0.9930
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0200, Train Accuracy: 0.9942
+Epoch 13, Val Loss: 0.0280, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0171, Train Accuracy: 0.9948
+Epoch 14, Val Loss: 0.0354, Val Accuracy: 0.9898
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0172, Train Accuracy: 0.9948
+Epoch 15, Val Loss: 0.0286, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0183, Train Accuracy: 0.9942
+Epoch 16, Val Loss: 0.0308, Val Accuracy: 0.9906
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0145, Train Accuracy: 0.9959
+Epoch 17, Val Loss: 0.0281, Val Accuracy: 0.9932
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0155, Train Accuracy: 0.9956
+Epoch 18, Val Loss: 0.0424, Val Accuracy: 0.9882
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0164, Train Accuracy: 0.9950
+Epoch 19, Val Loss: 0.0276, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0128, Train Accuracy: 0.9962
+Epoch 20, Val Loss: 0.0443, Val Accuracy: 0.9872
+Model 6: Avg Train Loss: 0.0124, Avg Train Accuracy: 0.9964, Avg Val Loss: 0.0354, Avg Val Accuracy: 0.9908
+Tempo de treino: 0:07:55.144038
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 87.954 W
+Training model 7/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.4585, Train Accuracy: 0.8425
+Epoch 1, Val Loss: 0.1084, Val Accuracy: 0.9700
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0779, Train Accuracy: 0.9770
+Epoch 2, Val Loss: 0.0468, Val Accuracy: 0.9863
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0591, Train Accuracy: 0.9827
+Epoch 3, Val Loss: 0.0608, Val Accuracy: 0.9818
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0514, Train Accuracy: 0.9850
+Epoch 4, Val Loss: 0.0632, Val Accuracy: 0.9809
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0430, Train Accuracy: 0.9875
+Epoch 5, Val Loss: 0.0462, Val Accuracy: 0.9870
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0381, Train Accuracy: 0.9893
+Epoch 6, Val Loss: 0.0404, Val Accuracy: 0.9890
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0328, Train Accuracy: 0.9905
+Epoch 7, Val Loss: 0.0327, Val Accuracy: 0.9900
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0321, Train Accuracy: 0.9909
+Epoch 8, Val Loss: 0.0309, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0275, Train Accuracy: 0.9918
+Epoch 9, Val Loss: 0.0591, Val Accuracy: 0.9848
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0225, Train Accuracy: 0.9934
+Epoch 10, Val Loss: 0.0353, Val Accuracy: 0.9903
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0213, Train Accuracy: 0.9938
+Epoch 11, Val Loss: 0.0371, Val Accuracy: 0.9901
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0211, Train Accuracy: 0.9936
+Epoch 12, Val Loss: 0.0293, Val Accuracy: 0.9916
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0201, Train Accuracy: 0.9941
+Epoch 13, Val Loss: 0.0353, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0164, Train Accuracy: 0.9956
+Epoch 14, Val Loss: 0.0295, Val Accuracy: 0.9917
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0162, Train Accuracy: 0.9952
+Epoch 15, Val Loss: 0.0303, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0147, Train Accuracy: 0.9954
+Epoch 16, Val Loss: 0.0533, Val Accuracy: 0.9854
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0175, Train Accuracy: 0.9947
+Epoch 17, Val Loss: 0.0229, Val Accuracy: 0.9932
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0134, Train Accuracy: 0.9960
+Epoch 18, Val Loss: 0.0388, Val Accuracy: 0.9896
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0157, Train Accuracy: 0.9954
+Epoch 19, Val Loss: 0.0283, Val Accuracy: 0.9921
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0112, Train Accuracy: 0.9968
+Epoch 20, Val Loss: 0.0386, Val Accuracy: 0.9898
+Model 7: Avg Train Loss: 0.0123, Avg Train Accuracy: 0.9964, Avg Val Loss: 0.0358, Avg Val Accuracy: 0.9907
+Tempo de treino: 0:07:55.820525
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 87.585 W
+Training model 8/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.5136, Train Accuracy: 0.8197
+Epoch 1, Val Loss: 0.0805, Val Accuracy: 0.9746
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0783, Train Accuracy: 0.9759
+Epoch 2, Val Loss: 0.0514, Val Accuracy: 0.9845
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0579, Train Accuracy: 0.9835
+Epoch 3, Val Loss: 0.0465, Val Accuracy: 0.9867
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0500, Train Accuracy: 0.9854
+Epoch 4, Val Loss: 0.0388, Val Accuracy: 0.9891
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0436, Train Accuracy: 0.9874
+Epoch 5, Val Loss: 0.0441, Val Accuracy: 0.9863
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0396, Train Accuracy: 0.9884
+Epoch 6, Val Loss: 0.0388, Val Accuracy: 0.9894
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0330, Train Accuracy: 0.9906
+Epoch 7, Val Loss: 0.0274, Val Accuracy: 0.9920
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0303, Train Accuracy: 0.9909
+Epoch 8, Val Loss: 0.0396, Val Accuracy: 0.9882
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0280, Train Accuracy: 0.9915
+Epoch 9, Val Loss: 0.0415, Val Accuracy: 0.9882
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0244, Train Accuracy: 0.9930
+Epoch 10, Val Loss: 0.0252, Val Accuracy: 0.9923
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0230, Train Accuracy: 0.9933
+Epoch 11, Val Loss: 0.0264, Val Accuracy: 0.9917
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0195, Train Accuracy: 0.9947
+Epoch 12, Val Loss: 0.0455, Val Accuracy: 0.9880
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0190, Train Accuracy: 0.9945
+Epoch 13, Val Loss: 0.0265, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0185, Train Accuracy: 0.9950
+Epoch 14, Val Loss: 0.0294, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0160, Train Accuracy: 0.9954
+Epoch 15, Val Loss: 0.0359, Val Accuracy: 0.9894
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0160, Train Accuracy: 0.9949
+Epoch 16, Val Loss: 0.0241, Val Accuracy: 0.9929
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0157, Train Accuracy: 0.9955
+Epoch 17, Val Loss: 0.0260, Val Accuracy: 0.9929
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0130, Train Accuracy: 0.9959
+Epoch 18, Val Loss: 0.0487, Val Accuracy: 0.9868
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0138, Train Accuracy: 0.9960
+Epoch 19, Val Loss: 0.0292, Val Accuracy: 0.9920
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0118, Train Accuracy: 0.9965
+Epoch 20, Val Loss: 0.0650, Val Accuracy: 0.9841
+Model 8: Avg Train Loss: 0.0122, Avg Train Accuracy: 0.9965, Avg Val Loss: 0.0395, Avg Val Accuracy: 0.9898
+Tempo de treino: 0:07:56.867634
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 88.304 W
+Training model 9/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.5017, Train Accuracy: 0.8256
+Epoch 1, Val Loss: 0.0838, Val Accuracy: 0.9728
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0901, Train Accuracy: 0.9730
+Epoch 2, Val Loss: 0.0787, Val Accuracy: 0.9773
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0653, Train Accuracy: 0.9810
+Epoch 3, Val Loss: 0.0438, Val Accuracy: 0.9862
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0531, Train Accuracy: 0.9841
+Epoch 4, Val Loss: 0.0546, Val Accuracy: 0.9821
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0457, Train Accuracy: 0.9866
+Epoch 5, Val Loss: 0.0495, Val Accuracy: 0.9850
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0406, Train Accuracy: 0.9882
+Epoch 6, Val Loss: 0.0349, Val Accuracy: 0.9891
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0345, Train Accuracy: 0.9898
+Epoch 7, Val Loss: 0.0431, Val Accuracy: 0.9879
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0308, Train Accuracy: 0.9911
+Epoch 8, Val Loss: 0.0611, Val Accuracy: 0.9828
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0296, Train Accuracy: 0.9914
+Epoch 9, Val Loss: 0.0339, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0286, Train Accuracy: 0.9915
+Epoch 10, Val Loss: 0.0344, Val Accuracy: 0.9905
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0223, Train Accuracy: 0.9935
+Epoch 11, Val Loss: 0.0292, Val Accuracy: 0.9920
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0216, Train Accuracy: 0.9938
+Epoch 12, Val Loss: 0.0333, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0207, Train Accuracy: 0.9942
+Epoch 13, Val Loss: 0.0366, Val Accuracy: 0.9895
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0198, Train Accuracy: 0.9942
+Epoch 14, Val Loss: 0.0311, Val Accuracy: 0.9911
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0171, Train Accuracy: 0.9946
+Epoch 15, Val Loss: 0.0357, Val Accuracy: 0.9896
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0146, Train Accuracy: 0.9957
+Epoch 16, Val Loss: 0.0309, Val Accuracy: 0.9919
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0175, Train Accuracy: 0.9948
+Epoch 17, Val Loss: 0.0313, Val Accuracy: 0.9927
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0148, Train Accuracy: 0.9956
+Epoch 18, Val Loss: 0.0326, Val Accuracy: 0.9907
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0152, Train Accuracy: 0.9951
+Epoch 19, Val Loss: 0.0265, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0121, Train Accuracy: 0.9964
+Epoch 20, Val Loss: 0.0341, Val Accuracy: 0.9915
+Model 9: Avg Train Loss: 0.0122, Avg Train Accuracy: 0.9964, Avg Val Loss: 0.0389, Avg Val Accuracy: 0.9900
+Tempo de treino: 0:07:55.669483
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 88.081 W
+Training model 10/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 1, Train Loss: 0.5002, Train Accuracy: 0.8257
+Epoch 1, Val Loss: 0.0964, Val Accuracy: 0.9724
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 2, Train Loss: 0.0742, Train Accuracy: 0.9789
+Epoch 2, Val Loss: 0.0515, Val Accuracy: 0.9836
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 3, Train Loss: 0.0589, Train Accuracy: 0.9827
+Epoch 3, Val Loss: 0.0477, Val Accuracy: 0.9868
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 4, Train Loss: 0.0475, Train Accuracy: 0.9862
+Epoch 4, Val Loss: 0.0500, Val Accuracy: 0.9855
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 5, Train Loss: 0.0403, Train Accuracy: 0.9884
+Epoch 5, Val Loss: 0.0427, Val Accuracy: 0.9877
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 6, Train Loss: 0.0360, Train Accuracy: 0.9898
+Epoch 6, Val Loss: 0.0334, Val Accuracy: 0.9904
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 7, Train Loss: 0.0290, Train Accuracy: 0.9921
+Epoch 7, Val Loss: 0.0456, Val Accuracy: 0.9889
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 8, Train Loss: 0.0285, Train Accuracy: 0.9918
+Epoch 8, Val Loss: 0.0342, Val Accuracy: 0.9900
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 9, Train Loss: 0.0258, Train Accuracy: 0.9925
+Epoch 9, Val Loss: 0.0331, Val Accuracy: 0.9905
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 10, Train Loss: 0.0217, Train Accuracy: 0.9937
+Epoch 10, Val Loss: 0.0411, Val Accuracy: 0.9892
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 11, Train Loss: 0.0221, Train Accuracy: 0.9933
+Epoch 11, Val Loss: 0.0318, Val Accuracy: 0.9908
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 12, Train Loss: 0.0193, Train Accuracy: 0.9940
+Epoch 12, Val Loss: 0.0333, Val Accuracy: 0.9907
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 13, Train Loss: 0.0175, Train Accuracy: 0.9949
+Epoch 13, Val Loss: 0.0363, Val Accuracy: 0.9896
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 14, Train Loss: 0.0158, Train Accuracy: 0.9951
+Epoch 14, Val Loss: 0.0337, Val Accuracy: 0.9912
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 15, Train Loss: 0.0173, Train Accuracy: 0.9948
+Epoch 15, Val Loss: 0.0323, Val Accuracy: 0.9906
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 16, Train Loss: 0.0137, Train Accuracy: 0.9959
+Epoch 16, Val Loss: 0.0283, Val Accuracy: 0.9913
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 17, Train Loss: 0.0143, Train Accuracy: 0.9954
+Epoch 17, Val Loss: 0.0275, Val Accuracy: 0.9918
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 18, Train Loss: 0.0131, Train Accuracy: 0.9963
+Epoch 18, Val Loss: 0.0263, Val Accuracy: 0.9922
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 19, Train Loss: 0.0131, Train Accuracy: 0.9961
+Epoch 19, Val Loss: 0.0308, Val Accuracy: 0.9920
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Epoch 20, Train Loss: 0.0111, Train Accuracy: 0.9966
+Epoch 20, Val Loss: 0.0271, Val Accuracy: 0.9921
+Model 10: Avg Train Loss: 0.0121, Avg Train Accuracy: 0.9965, Avg Val Loss: 0.0377, Avg Val Accuracy: 0.9902
+Tempo de treino: 0:07:55.252089
+FLOPs: 190336256.0
+Parâmetros: 23271114.0
+Power usage: 88.231 W
+************************************************************************************************
+O melhor modelo é o Modelo 5 com a menor perda média de validação: 0.0336
+************************************************************************************************
+Average Train Time: 248.84470932 seconds
+Average Power Usage: 88.11283400666667 W
+Accuracy: 0.9912
+
+Precision: 0.9912452303959324
+
+Recall: 0.9910315015228935
+
+F1 Score: 0.9911141348530002
+
