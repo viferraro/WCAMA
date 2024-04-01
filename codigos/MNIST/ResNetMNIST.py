@@ -236,6 +236,11 @@ for i in range(1):
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
+                # Medir o consumo de energia
+                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+                info = pynvml.nvmlDeviceGetPowerUsage(handle)
+                power_usage = info / 1000.0
+                train_powers.append(power_usage)
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
             print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
@@ -254,6 +259,7 @@ for i in range(1):
                     _, predicted = torch.max(outputs.data, 1)
                     total += labels.size(0)
                     correct += (predicted == labels).sum().item()
+            tracker.epoch_end()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
             print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
@@ -265,8 +271,10 @@ for i in range(1):
 
     # Treinamento e seleção do melhor modelo entre 10 candidatos
     num_models = 10
-    best_val_loss = float('inf')
+    avg_valid_loss = []
     best_model_idx = -1
+    best_model = model
+    models = []
     metrics = []
     avg_metrics = []
     for i in range(num_models):
@@ -279,7 +287,7 @@ for i in range(1):
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
         train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage = (
             train_and_validate(model, train_loader, val_loader, criterion, optimizer, 20))
-        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy))
+        metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds(), power_usage))
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
         avg_train_accuracy = np.mean([m[1] for m in metrics])
@@ -293,84 +301,85 @@ for i in range(1):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(),
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time,
              power_usage))
         models.append(model)
 
-        # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
-        df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
+    # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
+    df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
                                                         'avg_Val Accuracy', 'TrainTime', 'PowerUsage'])
 
-        # Adicione uma coluna 'Model' ao DataFrame
-        df_metrics.insert(0, 'Model', ['Modelo_' + str(i + 1) for i in range(num_models)])
+    # Adiciona uma coluna 'Modelo_x' ao DataFrame
+    modelos = ['Modelo_' + str(i + 1) for i in range(num_models)]
+    df_metrics.insert(0, 'Model', modelos)
 
-        # Salve as métricas de todos os modelos em um único arquivo no diretório pai 'alexNet_x'
-        df_metrics.to_excel(f'{parent_dir}/models_metrics.xlsx', index=False)
+    # Salva as métricas de todos os modelos em um único arquivo no diretório pai 'leNet_x'
+    df_metrics.to_excel(f'{parent_dir}/models_metrics.xlsx', index=False)
 
-        # Seleciona o melhor modelo com base na menor perda de validação.
-        best_model_index = avg_valid_loss.index(min(avg_valid_loss))
-        best_model = models[best_model_index]
-        print('************************************************************************************************')
-        print(
-            f'O melhor modelo é o Modelo {best_model_index + 1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
+    # Seleciona o melhor modelo com base na menor perda de validação.
+    best_model_index = avg_valid_loss.index(min(avg_valid_loss))
+    best_model = models[best_model_index]
+    print('************************************************************************************************')
+    print(
+        f'O melhor modelo é o Modelo {best_model_index + 1} com a menor perda média de validação: {min(avg_valid_loss):.4f}')
 
-        print('************************************************************************************************')
-        # Calcular a média dos tempos de treino e power usage
-        avg_train_time = np.mean(train_times)
-        avg_power_usage = np.mean(train_powers)
-        avg_metrics.append((avg_train_time, avg_power_usage))
-        print(f'Average Train Time: {avg_train_time} seconds')
-        print(f'Average Power Usage: {avg_power_usage} W')
+    print('************************************************************************************************')
+    # Calcular a média dos tempos de treino e power usage
+    avg_train_time = np.mean(train_times)
+    avg_power_usage = np.mean(train_powers)
+    # avg_metrics.append((avg_train_time, avg_power_usage))
+    print(f'Average Train Time: {avg_train_time} seconds')
+    print(f'Average Power Usage: {avg_power_usage} W')
 
-        # Avaliar o melhor modelo no conjunto de teste
-        y_true = []
-        y_pred = []
-        best_model.eval()
-        with torch.no_grad():
-            for data in test_loader:
-                images, labels = data[0].to(device), data[1].to(device)
-                outputs = best_model(images)
-                _, predicted = torch.max(outputs.data, 1)
-                y_true.extend(labels.cpu().numpy())
-                y_pred.extend(predicted.cpu().numpy())
+    # Avaliar o melhor modelo no conjunto de teste
+    y_true = []
+    y_pred = []
+    best_model.eval()
+    with torch.no_grad():
+        for data in test_loader:
+            images, labels = data[0].to(device), data[1].to(device)
+            outputs = best_model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            y_true.extend(labels.cpu().numpy())
+            y_pred.extend(predicted.cpu().numpy())
 
-        # Calcular métricas
-        accuracy = accuracy_score(y_true, y_pred)
-        precision = precision_score(y_true, y_pred, average='macro')
-        recall = recall_score(y_true, y_pred, average='macro')
-        f1 = f1_score(y_true, y_pred, average='macro')
+    # Calcular métricas
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred, average='macro')
+    recall = recall_score(y_true, y_pred, average='macro')
+    f1 = f1_score(y_true, y_pred, average='macro')
 
-        # Imprimir métricas
-        print(f'Accuracy: {accuracy}\n')
-        print(f'Precision: {precision}\n')
-        print(f'Recall: {recall}\n')
-        print(f'F1 Score: {f1}\n')
+    # Imprimir métricas
+    print(f'Accuracy: {accuracy}\n')
+    print(f'Precision: {precision}\n')
+    print(f'Recall: {recall}\n')
+    print(f'F1 Score: {f1}\n')
 
-        sys.stdout.close()
-        sys.stdout = original_stdout
+    sys.stdout.close()
+    sys.stdout = original_stdout
 
-        # Calcular a matriz de confusão
-        cm = confusion_matrix(y_true, y_pred)
+    # Calcular a matriz de confusão
+    cm = confusion_matrix(y_true, y_pred)
 
-        # Plotar a matriz de confusão
-        plt.figure(figsize=(10, 7))
-        sns.heatmap(cm, annot=True, fmt='d', cmap=plt.cm.Blues)
-        plt.xlabel('Predicted')
-        plt.ylabel('Truth')
+    # Plotar a matriz de confusão
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(cm, annot=True, fmt='d', cmap=plt.cm.Blues)
+    plt.xlabel('Predicted')
+    plt.ylabel('Truth')
 
-        # Salvar a figura
-        plt.savefig(f'{parent_dir}/confusion_matrix.png')
-        plt.close()
+    # Salvar a figura
+    plt.savefig(f'{parent_dir}/confusion_matrix.png')
+    plt.close()
 
-        # Salvar as métricas do melhor modelo
-        with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
-            f.write(f'Accuracy: {accuracy}\n')
-            f.write(f'Precision: {precision}\n')
-            f.write(f'Recall: {recall}\n')
-            f.write(f'F1 Score: {f1}\n')
+    #  Salvar as métricas do melhor modelo no diretório pai 'leNet_'
+    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
+        f.write(f'Accuracy: {accuracy}\n')
+        f.write(f'Precision: {precision}\n')
+        f.write(f'Recall: {recall}\n')
+        f.write(f'F1 Score: {f1}\n')
 
-        pynvml.nvmlShutdown()
-        tracker.stop()
-        print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
+    pynvml.nvmlShutdown()
+    tracker.stop()
+    print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
 
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
