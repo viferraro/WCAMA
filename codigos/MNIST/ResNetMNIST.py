@@ -270,7 +270,7 @@ for i in range(1):
         return train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage
 
     # Treinamento e seleção do melhor modelo entre 10 candidatos
-    num_models = 2
+    num_models = 10
     avg_valid_loss = []
     best_model_idx = -1
     best_model = model
