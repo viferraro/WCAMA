@@ -270,7 +270,7 @@ for i in range(1):
         return train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage
 
     # Treinamento e seleção do melhor modelo entre 10 candidatos
-    num_models = 10
+    num_models = 2
     avg_valid_loss = []
     best_model_idx = -1
     best_model = model
@@ -334,6 +334,7 @@ for i in range(1):
     # Avaliar o melhor modelo no conjunto de teste
     y_true = []
     y_pred = []
+    start_time_test = datetime.now()
     best_model.eval()
     with torch.no_grad():
         for data in test_loader:
@@ -342,18 +343,22 @@ for i in range(1):
             _, predicted = torch.max(outputs.data, 1)
             y_true.extend(labels.cpu().numpy())
             y_pred.extend(predicted.cpu().numpy())
+    end_time_test = datetime.now()
 
     # Calcular métricas
     accuracy = accuracy_score(y_true, y_pred)
     precision = precision_score(y_true, y_pred, average='macro')
     recall = recall_score(y_true, y_pred, average='macro')
     f1 = f1_score(y_true, y_pred, average='macro')
+    test_time = (end_time_test - start_time_test)
 
     # Imprimir métricas
     print(f'Accuracy: {accuracy}\n')
     print(f'Precision: {precision}\n')
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
+    print(f'Test Time: {test_time}')
+    print(f'seconds: {test_time.total_seconds()}')
 
     sys.stdout.close()
     sys.stdout = original_stdout
@@ -377,6 +382,8 @@ for i in range(1):
         f.write(f'Precision: {precision}\n')
         f.write(f'Recall: {recall}\n')
         f.write(f'F1 Score: {f1}\n')
+        f.write(f'Test Time: {test_time}\n')
+        f.write(f'Seconds: {test_time.total_seconds()}\n')
 
     pynvml.nvmlShutdown()
     tracker.stop()

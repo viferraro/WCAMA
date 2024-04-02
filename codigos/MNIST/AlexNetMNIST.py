@@ -19,17 +19,17 @@ import matplotlib.pyplot as plt
 import io
 import sys
 
-
 # Valor usado para inicializar o gerador de números aleatórios
 SEED = 10
 
-# Verificação da disponibilidade da GPU e seleção do dispositivo
+# Verificar se a GPU está disponível
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f'Dispositivo utilizado: {device}')
+print(device)
 
 for i in range(1):
     # Inicialização do NVML para monitoramento da GPU
     pynvml.nvmlInit()
+
 
     # Defina uma função para criar um diretório com incremento, se ele já existir
     def create_incremented_dir(base_dir, subfolder_name):
@@ -43,17 +43,15 @@ for i in range(1):
 
 
     # Crie o diretório pai 'alexNetMNIST_' com incremento se necessário
-    parent_dir = create_incremented_dir('resultados4', 'alexNetMNIST')
-    # diretorio = str(parent_dir)
+    parent_dir = create_incremented_dir('resultados7', 'alexNetMNIST')
     print(f'Diretório criado: {parent_dir}')
 
     # Crie o diretório 'AlexNetCarbon'
 
-    carbon_dir = create_incremented_dir(parent_dir, 'alex_carbon')
-    # subDiretorio = str(carbon_dir)
+    carbon_dir = create_incremented_dir(parent_dir, 'alexNet_carbon')
     print(f'Diretório Carbon criado: {carbon_dir}')
 
-    # Hiperparâmetros e inicializações
+    # Definições iniciais
     max_epochs = 20
     train_times = []
     train_powers = []
@@ -83,18 +81,20 @@ for i in range(1):
     print(f"Predicted consumption: {first_log['pred']}")
     print(f"Measured GPU devices: {first_log['components']['gpu']['devices']}")
 
-
-    # Carregamento e normalização do conjunto de dados MNIST
+    # Carregar e normalizar o MNIST
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5,), (0.5,))
     ])
+
     full_train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
+    # Dividir o conjunto de treino em treino e validação
     train_size = int(0.8 * len(full_train_dataset))
     val_size = len(full_train_dataset) - train_size
     train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
+
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
@@ -136,9 +136,8 @@ for i in range(1):
             x = self.classifier(x)
             return x
 
-    model = AlexNet(num_classes=10).to(device)
+    model = AlexNet().to(device)
     print(model)
-
 
     # Salvar a saída padrão original
     original_stdout = sys.stdout
@@ -165,12 +164,13 @@ for i in range(1):
     # Redirecionar a saída padrão para um arquivo
     sys.stdout = open(f'{parent_dir}/output.txt', 'w')
 
+
     # Função para treinar e validar um modelo
-    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, max_epochs):
+    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
         model.train()
         start_time = datetime.now()
         tracker.epoch_start()
-        for epoch in range(max_epochs):
+        for epoch in range(epochs):
             tracker.epoch_start()
             running_loss = 0.0
             correct = 0
@@ -193,7 +193,7 @@ for i in range(1):
                 train_powers.append(power_usage)
             train_loss = running_loss / len(train_loader)
             train_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
 
             # Validação
             model.eval()
@@ -209,9 +209,10 @@ for i in range(1):
                     _, predicted = torch.max(outputs.data, 1)
                     total += labels.size(0)
                     correct += (predicted == labels).sum().item()
+            tracker.epoch_end()
             val_loss /= len(val_loader)
             val_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+            print(f'Epoch {epoch + 1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
         end_time = datetime.now()
         train_time = (end_time - start_time)
         train_times.append(train_time.total_seconds())
@@ -219,7 +220,7 @@ for i in range(1):
         return train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage
 
 
-    # Treinar 10 modelos e selecionar o melhor
+    # Treinamento e seleção do melhor modelo entre 10 candidatos
     num_models = 10
     avg_valid_loss = []
     best_model_idx = -1
@@ -227,20 +228,17 @@ for i in range(1):
     models = []
     metrics = []
     avg_metrics = []
-
     for i in range(num_models):
-        print(f'Training model {i+1}/{num_models}')
+        print("______________________________________________________________________________________________________")
+        print(f'Training model {i + 1}/{num_models}')
         input = torch.randn(1, 1, 28, 28).to(device)
         model = AlexNet().to(device)
         flops, params = profile(model, inputs=(input,), verbose=False)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
-        train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage = (train_and_validate
-                                                              (model, train_loader, val_loader,
-                                                               criterion, optimizer, 20))
-
+        train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage = (
+            train_and_validate(model, train_loader, val_loader, criterion, optimizer, 20))
         metrics.append((train_loss, train_accuracy, val_loss, val_accuracy, train_time.total_seconds(), power_usage))
-
         # Calcular a média das métricas após o treino de cada modelo
         avg_train_loss = np.mean([m[0] for m in metrics])
         avg_train_accuracy = np.mean([m[1] for m in metrics])
@@ -254,17 +252,19 @@ for i in range(1):
         print(f'Power usage: {power_usage} W')
         avg_valid_loss.append(avg_val_loss)
         avg_metrics.append(
-            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(), power_usage))
+            (avg_train_loss, avg_train_accuracy, avg_val_loss, avg_val_accuracy, train_time.total_seconds(),
+             power_usage))
         models.append(model)
 
     # Crie um DataFrame com as métricas médias e salve-o em um arquivo Excel
     df_metrics = pd.DataFrame(avg_metrics, columns=['avg_Train Loss', 'avg_Train Accuracy', 'avg_Val Loss',
                                                     'avg_Val Accuracy', 'TrainTime', 'PowerUsage'])
 
-    # Adicione uma coluna 'Model' ao DataFrame
-    df_metrics.insert(0, 'Model', ['Modelo_' + str(i + 1) for i in range(num_models)])
+    # Adiciona uma coluna 'Modelo_x' ao DataFrame
+    modelos = ['Modelo_' + str(i + 1) for i in range(num_models)]
+    df_metrics.insert(0, 'Model', modelos)
 
-    # Salve as métricas de todos os modelos em um único arquivo no diretório pai 'alexNet_x'
+    # Salva as métricas de todos os modelos em um único arquivo no diretório pai 'leNet_x'
     df_metrics.to_excel(f'{parent_dir}/models_metrics.xlsx', index=False)
 
     # Seleciona o melhor modelo com base na menor perda de validação.
@@ -278,13 +278,14 @@ for i in range(1):
     # Calcular a média dos tempos de treino e power usage
     avg_train_time = np.mean(train_times)
     avg_power_usage = np.mean(train_powers)
-    avg_metrics.append((avg_train_time, avg_power_usage))
+    # avg_metrics.append((avg_train_time, avg_power_usage))
     print(f'Average Train Time: {avg_train_time} seconds')
     print(f'Average Power Usage: {avg_power_usage} W')
 
     # Avaliar o melhor modelo no conjunto de teste
     y_true = []
     y_pred = []
+    start_time_test = datetime.now()
     best_model.eval()
     with torch.no_grad():
         for data in test_loader:
@@ -293,18 +294,21 @@ for i in range(1):
             _, predicted = torch.max(outputs.data, 1)
             y_true.extend(labels.cpu().numpy())
             y_pred.extend(predicted.cpu().numpy())
+    end_time_test = datetime.now()
 
     # Calcular métricas
     accuracy = accuracy_score(y_true, y_pred)
     precision = precision_score(y_true, y_pred, average='macro')
     recall = recall_score(y_true, y_pred, average='macro')
     f1 = f1_score(y_true, y_pred, average='macro')
-
+    test_time = (end_time_test - start_time_test)
     # Imprimir métricas
     print(f'Accuracy: {accuracy}\n')
     print(f'Precision: {precision}\n')
     print(f'Recall: {recall}\n')
     print(f'F1 Score: {f1}\n')
+    print(f'Test Time: {test_time}')
+    print(f'seconds: {test_time.total_seconds()}')
 
     sys.stdout.close()
     sys.stdout = original_stdout
@@ -322,12 +326,14 @@ for i in range(1):
     plt.savefig(f'{parent_dir}/confusion_matrix.png')
     plt.close()
 
-    # Salvar as métricas do melhor modelo
+    #  Salvar as métricas do melhor modelo no diretório pai 'leNet_'
     with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
         f.write(f'Accuracy: {accuracy}\n')
         f.write(f'Precision: {precision}\n')
         f.write(f'Recall: {recall}\n')
         f.write(f'F1 Score: {f1}\n')
+        f.write(f'Test Time: {test_time}\n')
+        f.write(f'Seconds: {test_time.total_seconds()}\n')
 
     pynvml.nvmlShutdown()
     tracker.stop()
