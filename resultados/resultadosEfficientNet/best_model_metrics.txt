@@ -1,0 +1,6 @@
+Accuracy: 0.1135
+Precision: 0.01135
+Recall: 0.1
+F1 Score: 0.0203861697350696
+Test Time: 0:00:01.144250
+Seconds: 1.14425
