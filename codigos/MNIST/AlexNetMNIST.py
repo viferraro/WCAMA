@@ -282,33 +282,48 @@ for i in range(1):
     print(f'Average Train Time: {avg_train_time} seconds')
     print(f'Average Power Usage: {avg_power_usage} W')
 
-    # Avaliar o melhor modelo no conjunto de teste
-    y_true = []
-    y_pred = []
-    start_time_test = datetime.now()
-    best_model.eval()
-    with torch.no_grad():
-        for data in test_loader:
-            images, labels = data[0].to(device), data[1].to(device)
-            outputs = best_model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            y_true.extend(labels.cpu().numpy())
-            y_pred.extend(predicted.cpu().numpy())
-    end_time_test = datetime.now()
+    # Inicializa listas para armazenar métricas de todas as inferências
+    accuracies = []
+    precisions = []
+    recalls = []
+    f1_scores = []
+    test_times = []
 
-    # Calcular métricas
-    accuracy = accuracy_score(y_true, y_pred)
-    precision = precision_score(y_true, y_pred, average='macro')
-    recall = recall_score(y_true, y_pred, average='macro')
-    f1 = f1_score(y_true, y_pred, average='macro')
-    test_time = (end_time_test - start_time_test)
-    # Imprimir métricas
-    print(f'Accuracy: {accuracy}\n')
-    print(f'Precision: {precision}\n')
-    print(f'Recall: {recall}\n')
-    print(f'F1 Score: {f1}\n')
-    print(f'Test Time: {test_time}')
-    print(f'seconds: {test_time.total_seconds()}')
+    # Realiza 10 inferências e armazena as métricas
+    for i in range(10):
+        y_true = []
+        y_pred = []
+        start_time_test = datetime.now()
+        best_model.eval()
+        with torch.no_grad():
+            for data in test_loader:
+                images, labels = data[0].to(device), data[1].to(device)
+                outputs = best_model(images)
+                _, predicted = torch.max(outputs.data, 1)
+                y_true.extend(labels.cpu().numpy())
+                y_pred.extend(predicted.cpu().numpy())
+        end_time_test = datetime.now()
+
+        # Calcula as métricas para a inferência atual
+        accuracies.append(accuracy_score(y_true, y_pred))
+        precisions.append(precision_score(y_true, y_pred, average='macro'))
+        recalls.append(recall_score(y_true, y_pred, average='macro'))
+        f1_scores.append(f1_score(y_true, y_pred, average='macro'))
+        test_times.append((end_time_test - start_time_test).total_seconds())
+
+    # Calcula a média das métricas
+    mean_accuracy = sum(accuracies) / len(accuracies)
+    mean_precision = sum(precisions) / len(precisions)
+    mean_recall = sum(recalls) / len(recalls)
+    mean_f1 = sum(f1_scores) / len(f1_scores)
+    mean_test_time = sum(test_times) / len(test_times)
+
+    # Imprime as médias das métricas
+    print(f'Média da Acurácia: {mean_accuracy}\n')
+    print(f'Média da Precisão: {mean_precision}\n')
+    print(f'Média do Recall: {mean_recall}\n')
+    print(f'Média do F1 Score: {mean_f1}\n')
+    print(f'Média do Tempo de Teste: {mean_test_time} segundos\n')
 
     sys.stdout.close()
     sys.stdout = original_stdout
@@ -326,17 +341,26 @@ for i in range(1):
     plt.savefig(f'{parent_dir}/confusion_matrix.png')
     plt.close()
 
-    #  Salvar as métricas do melhor modelo no diretório pai 'leNet_'
-    with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
-        f.write(f'Accuracy: {accuracy}\n')
-        f.write(f'Precision: {precision}\n')
-        f.write(f'Recall: {recall}\n')
-        f.write(f'F1 Score: {f1}\n')
-        f.write(f'Test Time: {test_time}\n')
-        f.write(f'Seconds: {test_time.total_seconds()}\n')
+    # #  Salvar as métricas do melhor modelo no diretório pai 'leNet_'
+    # with open(f'{parent_dir}/best_model_metrics.txt', 'w') as f:
+    #     f.write(f'Accuracy: {accuracy}\n')
+    #     f.write(f'Precision: {precision}\n')
+    #     f.write(f'Recall: {recall}\n')
+    #     f.write(f'F1 Score: {f1}\n')
+    #     f.write(f'Test Time: {test_time}\n')
+    #     f.write(f'Seconds: {test_time.total_seconds()}\n')
+
+    # Salva as médias das métricas em um arquivo
+    with open(f'{parent_dir}/average_model_metrics.txt', 'w') as f:
+        f.write(f'Média da Acurácia: {mean_accuracy}\n')
+        f.write(f'Média da Precisão: {mean_precision}\n')
+        f.write(f'Média do Recall: {mean_recall}\n')
+        f.write(f'Média do F1 Score: {mean_f1}\n')
+        f.write(f'Média do Tempo de Teste: {mean_test_time} segundos\n')
 
     pynvml.nvmlShutdown()
     tracker.stop()
     print('Treinamento concluído. Os resultados foram salvos nos arquivos especificados.')
 
     print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
