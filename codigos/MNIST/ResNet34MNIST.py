@@ -1,270 +1,248 @@
+import os
+import sys
+import io
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
-from torchvision import datasets, transforms
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
-import pandas as pd
-import numpy as np
-import os
 from datetime import datetime
-from carbontracker.tracker import CarbonTracker
-from carbontracker import parser
+from sklearn.metrics import (accuracy_score, precision_score, recall_score,
+                             f1_score, confusion_matrix)
 from thop import profile
 from torchsummary import summary
+from torch.utils.data import DataLoader, random_split
+from torchvision import datasets, transforms
+from carbontracker.tracker import CarbonTracker
+from carbontracker import parser
 import pynvml
-import seaborn as sns
-import matplotlib.pyplot as plt
-import io
-import sys
 
-# Valor usado para inicializar o gerador de números aleatórios
+# Constante para inicialização do gerador de números aleatórios
 SEED = 10
 
-# Verificação da disponibilidade da GPU e seleção do dispositivo
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f'Dispositivo utilizado: {device}')
+# Verifica se a GPU está disponível
+dispositivo = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(dispositivo)
 
-for i in range(1):
-    # Inicialização do NVML para monitoramento da GPU
-    pynvml.nvmlInit()
+# Inicializa o NVML para monitoramento da GPU
+pynvml.nvmlInit()
 
+# Função para criar um diretório com incremento, se necessário
+def criar_diretorio_incrementado(diretorio_base, nome_subpasta):
+    contador = 1
+    diretorio_pai = os.path.join(diretorio_base, f"{nome_subpasta}_{contador}")
+    while os.path.exists(diretorio_pai):
+        contador += 1
+        diretorio_pai = os.path.join(diretorio_base, f"{nome_subpasta}_{contador}")
+    os.makedirs(diretorio_pai)
+    return diretorio_pai
 
-    # Defina uma função para criar um diretório com incremento, se ele já existir
-    def create_incremented_dir(base_dir, subfolder_name):
-        i = 1
-        parent_dir = os.path.join(base_dir, f"{subfolder_name}_{i}")
-        while os.path.exists(parent_dir):
-            i += 1
-            parent_dir = os.path.join(base_dir, f"{subfolder_name}_{i}")
-        os.makedirs(parent_dir)
-        return parent_dir
+# Cria o diretório pai 'ResNetMNIST_' com incremento, se necessário
+diretorio_pai = criar_diretorio_incrementado('resultados3', 'ResNetMNIST')
+print(f'Diretório criado: {diretorio_pai}')
 
+# Cria o diretório 'resNetCarbon'
+diretorio_carbon = criar_diretorio_incrementado(diretorio_pai, 'resNet_carbono')
+print(f'Diretório Carbono criado: {diretorio_carbon}')
 
-    # Crie o diretório de resultados com incremento, se necessário
-    parent_dir = create_incremented_dir('resultados11', 'ResNetMNIST')
-    # diretorio = str(parent_dir)
-    print(f'Diretório criado: {parent_dir}')
+# Definições iniciais
+maximo_epocas = 20
+tempos_treino = []
+potencias_treino = []
+tracker = CarbonTracker(epochs=maximo_epocas, monitor_epochs=-1, interpretable=True,
+                           log_dir=f"./{diretorio_carbon}/",
+                           log_file_prefix="cbt")
 
-    # Crie o diretório 'AlexNetCarbon'
+# Carrega e normaliza o MNIST
+transformacao = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,))
+])
 
-    carbon_dir = create_incremented_dir(parent_dir, 'alex_carbon')
-    # subDiretorio = str(carbon_dir)
-    print(f'Diretório Carbon criado: {carbon_dir}')
+conjunto_treino_completo = datasets.MNIST(root='./data', train=True, download=True, transform=transformacao)
+conjunto_teste = datasets.MNIST(root='./data', train=False, download=True, transform=transformacao)
 
-    # Hiperparâmetros e inicializações
-    max_epochs = 20
-    train_times = []
-    train_powers = []
-    tracker = CarbonTracker(epochs=max_epochs, monitor_epochs=-1, interpretable=True,
-                            log_dir=f"./{carbon_dir}/",
-                            log_file_prefix="cbt")
+# Divide o conjunto de treino em treino e validação
+tamanho_treino = int(0.8 * len(conjunto_treino_completo))
+tamanho_validacao = len(conjunto_treino_completo) - tamanho_treino
+conjunto_treino, conjunto_validacao = random_split(conjunto_treino_completo, [tamanho_treino, tamanho_validacao])
 
-    log_dir = f"./{carbon_dir}/"
-    all_logs = os.listdir(log_dir)
-    std_logs = [f for f in all_logs if f.endswith('_carbontracker.log')]
-    missing_logs = ['epoch_{}_carbontracker.log'.format(i) for i in range(max_epochs) if
-                    'epoch_{}_carbontracker.log'.format(i) not in all_logs]
-    for f in missing_logs:
-        log_file = f + "_carbontracker.log"
-        if log_file in std_logs:
-            std_logs.remove(log_file)
+carregador_treino = DataLoader(conjunto_treino, batch_size=64, shuffle=True)
+carregador_validacao = DataLoader(conjunto_validacao, batch_size=64, shuffle=False)
+carregador_teste = DataLoader(conjunto_teste, batch_size=64, shuffle=False)
 
-    # Agora você pode chamar as funções do parser com segurança
-    parser.print_aggregate(log_dir)
-    logs = parser.parse_all_logs(log_dir)
-    first_log = logs[0]
+# Definição da arquitetura da rede neural ResNet34
+class ResNet34(nn.Module):
+    def __init__(self):
+        super(ResNet34, self).__init__()  # Inicializa a classe pai, nn.Module
+        self.conv1 = nn.Conv2d(1, 64, 7, stride=2, padding=3)  # Primeira camada convolucional
+        self.bn1 = nn.BatchNorm2d(64)  # Normalização em lote para acelerar o treinamento
+        self.relu = nn.ReLU(inplace=True)  # Função de ativação ReLU
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)  # Camada de agrupamento máximo
+        self.layer1 = self._make_layer(64, 64, 3)  # Primeiro bloco residual
+        self.layer2 = self._make_layer(64, 128, 4, stride=2)  # Segundo bloco residual
+        self.layer3 = self._make_layer(128, 256, 6, stride=2)  # Terceiro bloco residual
+        self.layer4 = self._make_layer(256, 512, 3, stride=2)  # Quarto bloco residual
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))  # Camada de agrupamento médio adaptativo
+        self.fc = nn.Linear(512, 10)  # Camada totalmente conectada para classificação
 
-    print(f"Output file name: {first_log['output_filename']}")
-    print(f"Standard file name: {first_log['standard_filename']}")
-    print(f"Stopped early: {first_log['early_stop']}")
-    print(f"Measured consumption: {first_log['actual']}")
-    print(f"Predicted consumption: {first_log['pred']}")
-    print(f"Measured GPU devices: {first_log['components']['gpu']['devices']}")
+    def _make_layer(self, inplanes, planes, blocks, stride=1):
+        downsample = None
+        # Verifica se é necessário uma camada de downsample
+        if stride != 1 or inplanes != planes:
+            downsample = nn.Sequential(
+                nn.Conv2d(inplanes, planes, kernel_size=1, stride=stride),
+                # Camada convolucional para downsample
+                nn.BatchNorm2d(planes),  # Normalização em lote
+            )
 
-    # Carregamento e normalização do conjunto de dados MNIST
-    transform = transforms.Compose([
-        transforms.Grayscale(num_output_channels=1),
-        transforms.ToTensor(),
-    ])
-    full_train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-    test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-    train_size = int(0.8 * len(full_train_dataset))
-    val_size = len(full_train_dataset) - train_size
-    train_dataset, val_dataset = random_split(full_train_dataset, [train_size, val_size])
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+        layers = []
+        layers.append(BasicBlock(inplanes, planes, stride,
+                                 downsample))  # Adiciona o primeiro bloco com downsample se necessário
+        inplanes = planes
+        for _ in range(1, blocks):
+            layers.append(BasicBlock(inplanes, planes))  # Adiciona os blocos restantes
 
+        return nn.Sequential(*layers)  # Retorna os blocos como uma sequência
 
-    # Definição da arquitetura da rede neural ResNet34
-    class ResNet34(nn.Module):
-        def __init__(self):
-            super(ResNet34, self).__init__()  # Inicializa a classe pai, nn.Module
-            self.conv1 = nn.Conv2d(1, 64, 7, stride=2, padding=3)  # Primeira camada convolucional
-            self.bn1 = nn.BatchNorm2d(64)  # Normalização em lote para acelerar o treinamento
-            self.relu = nn.ReLU(inplace=True)  # Função de ativação ReLU
-            self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)  # Camada de agrupamento máximo
-            self.layer1 = self._make_layer(64, 64, 3)  # Primeiro bloco residual
-            self.layer2 = self._make_layer(64, 128, 4, stride=2)  # Segundo bloco residual
-            self.layer3 = self._make_layer(128, 256, 6, stride=2)  # Terceiro bloco residual
-            self.layer4 = self._make_layer(256, 512, 3, stride=2)  # Quarto bloco residual
-            self.avgpool = nn.AdaptiveAvgPool2d((1, 1))  # Camada de agrupamento médio adaptativo
-            self.fc = nn.Linear(512, 10)  # Camada totalmente conectada para classificação
+    def forward(self, x):
+        x = self.conv1(x)  # Passa a entrada pela primeira camada convolucional
+        x = self.bn1(x)  # Normalização em lote
+        x = self.relu(x)  # Função de ativação ReLU
+        x = self.maxpool(x)  # Agrupamento máximo
 
-        def _make_layer(self, inplanes, planes, blocks, stride=1):
-            downsample = None
-            # Verifica se é necessário uma camada de downsample
-            if stride != 1 or inplanes != planes:
-                downsample = nn.Sequential(
-                    nn.Conv2d(inplanes, planes, kernel_size=1, stride=stride),
-                    # Camada convolucional para downsample
-                    nn.BatchNorm2d(planes),  # Normalização em lote
-                )
+        x = self.layer1(x)  # Passa a entrada pelo primeiro bloco residual
+        x = self.layer2(x)  # Passa a entrada pelo segundo bloco residual
+        x = self.layer3(x)  # Passa a entrada pelo terceiro bloco residual
+        x = self.layer4(x)  # Passa a entrada pelo quarto bloco residual
 
-            layers = []
-            layers.append(BasicBlock(inplanes, planes, stride,
-                                     downsample))  # Adiciona o primeiro bloco com downsample se necessário
-            inplanes = planes
-            for _ in range(1, blocks):
-                layers.append(BasicBlock(inplanes, planes))  # Adiciona os blocos restantes
+        x = self.avgpool(x)  # Agrupamento médio adaptativo
+        x = torch.flatten(x, 1)  # Achata o tensor para a camada totalmente conectada
+        x = self.fc(x)  # Passa a entrada pela camada totalmente conectada
 
-            return nn.Sequential(*layers)  # Retorna os blocos como uma sequência
-
-        def forward(self, x):
-            x = self.conv1(x)  # Passa a entrada pela primeira camada convolucional
-            x = self.bn1(x)  # Normalização em lote
-            x = self.relu(x)  # Função de ativação ReLU
-            x = self.maxpool(x)  # Agrupamento máximo
-
-            x = self.layer1(x)  # Passa a entrada pelo primeiro bloco residual
-            x = self.layer2(x)  # Passa a entrada pelo segundo bloco residual
-            x = self.layer3(x)  # Passa a entrada pelo terceiro bloco residual
-            x = self.layer4(x)  # Passa a entrada pelo quarto bloco residual
-
-            x = self.avgpool(x)  # Agrupamento médio adaptativo
-            x = torch.flatten(x, 1)  # Achata o tensor para a camada totalmente conectada
-            x = self.fc(x)  # Passa a entrada pela camada totalmente conectada
-
-            return x  # Retorna a saída da rede
+        return x  # Retorna a saída da rede
 
 
-    class BasicBlock(nn.Module):
-        expansion = 1  # Fator de expansão para a última camada convolucional no bloco
+class BasicBlock(nn.Module):
+    expansion = 1  # Fator de expansão para a última camada convolucional no bloco
 
-        def __init__(self, inplanes, planes, stride=1, downsample=None):
-            super(BasicBlock, self).__init__()  # Inicializa a classe pai, nn.Module
-            self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=3, stride=stride,
-                                   padding=1)  # Primeira camada convolucional
-            self.bn1 = nn.BatchNorm2d(planes)  # Normalização em lote
-            self.relu = nn.ReLU(inplace=True)  # Função de ativação ReLU
-            self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1,
-                                   padding=1)  # Segunda camada convolucional
-            self.bn2 = nn.BatchNorm2d(planes)  # Normalização em lote
-            self.downsample = downsample  # Camada de downsample, se necessário
-            self.stride = stride  # Passo para a primeira camada convolucional
+    def __init__(self, inplanes, planes, stride=1, downsample=None):
+        super(BasicBlock, self).__init__()  # Inicializa a classe pai, nn.Module
+        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=3, stride=stride,
+                               padding=1)  # Primeira camada convolucional
+        self.bn1 = nn.BatchNorm2d(planes)  # Normalização em lote
+        self.relu = nn.ReLU(inplace=True)  # Função de ativação ReLU
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1,
+                               padding=1)  # Segunda camada convolucional
+        self.bn2 = nn.BatchNorm2d(planes)  # Normalização em lote
+        self.downsample = downsample  # Camada de downsample, se necessário
+        self.stride = stride  # Passo para a primeira camada convolucional
 
-        def forward(self, x):
-            identity = x  # Salva a entrada original para a conexão residual
+    def forward(self, x):
+        identity = x  # Salva a entrada original para a conexão residual
 
-            out = self.conv1(x)  # Passa a entrada pela primeira camada convolucional
-            out = self.bn1(out)  # Normalização em lote
-            out = self.relu(out)  # Função de ativação ReLU
+        out = self.conv1(x)  # Passa a entrada pela primeira camada convolucional
+        out = self.bn1(out)  # Normalização em lote
+        out = self.relu(out)  # Função de ativação ReLU
 
-            out = self.conv2(out)  # Passa a entrada pela segunda camada convolucional
-            out = self.bn2(out)  # Normalização em lote
+        out = self.conv2(out)  # Passa a entrada pela segunda camada convolucional
+        out = self.bn2(out)  # Normalização em lote
 
-            if self.downsample is not None:
-                identity = self.downsample(x)  # Aplica o downsample na entrada original, se necessário
+        if self.downsample is not None:
+            identity = self.downsample(x)  # Aplica o downsample na entrada original, se necessário
 
-            out += identity  # Adiciona a entrada original (ou sua versão com downsample) à saída
-            out = self.relu(out)  # Função de ativação ReLU
+        out += identity  # Adiciona a entrada original (ou sua versão com downsample) à saída
+        out = self.relu(out)  # Função de ativação ReLU
 
-            return out  # Retorna a saída do bloco
+        return out  # Retorna a saída do bloco
 
 
-    model = ResNet34().to(device)
-    print(model)
+modelo = ResNet34().to(dispositivo)
+print(modelo)
 
-    # Salvar a saída padrão original
-    original_stdout = sys.stdout
+# Salvar a saída padrão original
+saida_padrao_original = sys.stdout
 
-    # Redirecionar a saída padrão para um buffer de string
-    sys.stdout = buffer = io.StringIO()
+# Redirecionar a saída padrão para um buffer de string
+sys.stdout = buffer = io.StringIO()
 
-    # Chamar a função summary
-    summary(model, (1, 28, 28))
+# Chamar a função summary
+summary(modelo, (1, 28, 28))
 
-    # Obter o valor da string do buffer
-    summary_str = buffer.getvalue()
+# Obter o valor da string do buffer
+resumo_str = buffer.getvalue()
 
-    # Restaurar a saída padrão original
-    sys.stdout = original_stdout
+# Restaurar a saída padrão original
+sys.stdout = saida_padrao_original
 
-    # Salvar a string de resumo em um arquivo
-    with open(f'{parent_dir}/model_summary.txt', 'w') as f:
-        f.write(summary_str)
+# Salvar a string de resumo em um arquivo
+with open(f'{diretorio_pai}/resumo_modelo.txt', 'w') as f:
+    f.write(resumo_str)
 
-    # Salvar a saída padrão original novamente
-    original_stdout = sys.stdout
+# Salvar a saída padrão original
+saida_padrao_original = sys.stdout
 
-    # Redirecionar a saída padrão para um arquivo
-    sys.stdout = open(f'{parent_dir}/output.txt', 'w')
+# Redirecionar a saída padrão para um arquivo
+sys.stdout = open(f'{diretorio_pai}/saida.txt', 'w')
 
-    # Função para treinar e validar um modelo
-    def train_and_validate(model, train_loader, val_loader, criterion, optimizer, epochs):
-        model.train()
-        start_time = datetime.now()
+def treinar_e_validar(modelo, carregador_treino, carregador_validacao, criterio, otimizador, epocas):
+    modelo.train()
+    tempo_inicio = datetime.now()
+    tracker.epoch_start()
+    for epoca in range(epocas):
         tracker.epoch_start()
-        for epoch in range(epochs):
-            tracker.epoch_start()
-            running_loss = 0.0
-            correct = 0
-            total = 0
-            for i, data in enumerate(train_loader, 0):
-                inputs, labels = data[0].to(device), data[1].to(device)
-                optimizer.zero_grad()
-                outputs = model(inputs)
-                loss = criterion(outputs, labels)
-                loss.backward()
-                optimizer.step()
-                running_loss += loss.item()
-                _, predicted = torch.max(outputs.data, 1)
-                total += labels.size(0)
-                correct += (predicted == labels).sum().item()
-                # Medir o consumo de energia
-                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-                info = pynvml.nvmlDeviceGetPowerUsage(handle)
-                power_usage = info / 1000.0
-                train_powers.append(power_usage)
-            train_loss = running_loss / len(train_loader)
-            train_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}')
+        perda_acumulada = 0.0
+        corretos = 0
+        total = 0
+        for i, dados in enumerate(carregador_treino, 0):
+            entradas, rotulos = dados[0].to(dispositivo), dados[1].to(dispositivo)
+            otimizador.zero_grad()
+            saidas = modelo(entradas)
+            perda = criterio(saidas, rotulos)
+            perda.backward()
+            otimizador.step()
+            perda_acumulada += perda.item()
+            _, previstos = torch.max(saidas.data, 1)
+            total += rotulos.size(0)
+            corretos += (previstos == rotulos).sum().item()
 
-            # Validação
-            model.eval()
-            val_loss = 0.0
-            correct = 0
-            total = 0
-            with torch.no_grad():
-                for data in val_loader:
-                    images, labels = data[0].to(device), data[1].to(device)
-                    outputs = model(images)
-                    loss = criterion(outputs, labels)
-                    val_loss += loss.item()
-                    _, predicted = torch.max(outputs.data, 1)
-                    total += labels.size(0)
-                    correct += (predicted == labels).sum().item()
-            tracker.epoch_end()
-            val_loss /= len(val_loader)
-            val_accuracy = correct / total
-            print(f'Epoch {epoch+1}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
-        end_time = datetime.now()
-        train_time = (end_time - start_time)
-        train_times.append(train_time.total_seconds())
+            # Medir o consumo de energia
+            handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+            info = pynvml.nvmlDeviceGetPowerUsage(handle)
+            consumo_energia = info / 1000.0
+            potencias_treino.append(consumo_energia)
+
+        perda_treino = perda_acumulada / len(carregador_treino)
+        acuracia_treino = corretos / total
+        print(f'Época {epoca + 1}, Perda Treino: {perda_treino:.4f}, Acurácia Treino: {acuracia_treino:.4f}')
+
+        # Validação
+        modelo.eval()
+        perda_validacao = 0.0
+        corretos = 0
+        total = 0
+        with torch.no_grad():
+            for dados in carregador_validacao:
+                imagens, rotulos = dados[0].to(dispositivo), dados[1].to(dispositivo)
+                saidas = modelo(imagens)
+                perda = criterio(saidas, rotulos)
+                perda_validacao += perda.item()
+                _, previstos = torch.max(saidas.data, 1)
+                total += rotulos.size(0)
+                corretos += (previstos == rotulos).sum().item()
         tracker.epoch_end()
-        return train_loss, train_accuracy, val_loss, val_accuracy, train_time, power_usage
+        perda_validacao /= len(carregador_validacao)
+        acuracia_validacao = corretos / total
+        print(f'Época {epoca + 1}, Perda Validação: {perda_validacao:.4f}, Acurácia Validação: {acuracia_validacao:.4f}')
+
+    tempo_fim = datetime.now()
+    tempo_treino = (tempo_fim - tempo_inicio)
+    tempos_treino.append(tempo_treino.total_seconds())
+    tracker.epoch_end()
+    return perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino.total_seconds(), consumo_energia
 
     # Treinamento e seleção do melhor modelo entre 10 candidatos
     num_models = 10
