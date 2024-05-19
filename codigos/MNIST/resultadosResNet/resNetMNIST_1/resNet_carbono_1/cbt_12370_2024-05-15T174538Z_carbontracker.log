@@ -1,0 +1,83 @@
+2024-05-15 17:45:38 - carbontracker version 1.2.5
+2024-05-15 17:45:38 - Only predicted and actual consumptions are multiplied by a PUE coefficient of 1.55 (Rhonda Ascierto, 2022, Uptime Institute Global Data Center Survey).
+2024-05-15 17:45:38 - The following components were found: GPU with device(s) NVIDIA GeForce RTX 3060. CPU with device(s) cpu:0.
+2024-05-15 17:45:38 - Monitoring thread started.
+2024-05-15 17:46:11 - Epoch 2:
+2024-05-15 17:46:11 - Duration: 0:00:24.19
+2024-05-15 17:46:11 - Average power usage (W) for gpu: [63.349]
+2024-05-15 17:46:11 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:46:34 - Epoch 3:
+2024-05-15 17:46:34 - Duration: 0:00:23.60
+2024-05-15 17:46:34 - Average power usage (W) for gpu: [80.321]
+2024-05-15 17:46:34 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:46:56 - Epoch 4:
+2024-05-15 17:46:56 - Duration: 0:00:22.21
+2024-05-15 17:46:56 - Average power usage (W) for gpu: [78.65366667]
+2024-05-15 17:46:56 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:47:19 - Epoch 5:
+2024-05-15 17:47:19 - Duration: 0:00:22.24
+2024-05-15 17:47:19 - Average power usage (W) for gpu: [82.7295]
+2024-05-15 17:47:19 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:47:41 - Epoch 6:
+2024-05-15 17:47:41 - Duration: 0:00:22.10
+2024-05-15 17:47:41 - Average power usage (W) for gpu: [82.0585]
+2024-05-15 17:47:41 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:48:03 - Epoch 7:
+2024-05-15 17:48:03 - Duration: 0:00:22.12
+2024-05-15 17:48:03 - Average power usage (W) for gpu: [81.7215]
+2024-05-15 17:48:03 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:48:25 - Epoch 8:
+2024-05-15 17:48:25 - Duration: 0:00:22.16
+2024-05-15 17:48:25 - Average power usage (W) for gpu: [81.2935]
+2024-05-15 17:48:25 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:48:47 - Epoch 9:
+2024-05-15 17:48:47 - Duration: 0:00:22.06
+2024-05-15 17:48:47 - Average power usage (W) for gpu: [75.24166667]
+2024-05-15 17:48:47 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:49:09 - Epoch 10:
+2024-05-15 17:49:09 - Duration: 0:00:22.34
+2024-05-15 17:49:09 - Average power usage (W) for gpu: [80.037]
+2024-05-15 17:49:09 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:49:32 - Epoch 11:
+2024-05-15 17:49:32 - Duration: 0:00:22.11
+2024-05-15 17:49:32 - Average power usage (W) for gpu: [81.4025]
+2024-05-15 17:49:32 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:49:54 - Epoch 12:
+2024-05-15 17:49:54 - Duration: 0:00:22.16
+2024-05-15 17:49:54 - Average power usage (W) for gpu: [81.2005]
+2024-05-15 17:49:54 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:50:16 - Epoch 13:
+2024-05-15 17:50:16 - Duration: 0:00:22.11
+2024-05-15 17:50:16 - Average power usage (W) for gpu: [81.263]
+2024-05-15 17:50:16 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:50:38 - Epoch 14:
+2024-05-15 17:50:38 - Duration: 0:00:22.03
+2024-05-15 17:50:38 - Average power usage (W) for gpu: [75.73266667]
+2024-05-15 17:50:38 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:51:01 - Epoch 15:
+2024-05-15 17:51:01 - Duration: 0:00:23.00
+2024-05-15 17:51:01 - Average power usage (W) for gpu: [79.1215]
+2024-05-15 17:51:01 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:51:24 - Epoch 16:
+2024-05-15 17:51:24 - Duration: 0:00:22.92
+2024-05-15 17:51:24 - Average power usage (W) for gpu: [79.1655]
+2024-05-15 17:51:24 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:51:46 - Epoch 17:
+2024-05-15 17:51:46 - Duration: 0:00:22.25
+2024-05-15 17:51:46 - Average power usage (W) for gpu: [80.5105]
+2024-05-15 17:51:46 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:52:08 - Epoch 18:
+2024-05-15 17:52:08 - Duration: 0:00:22.02
+2024-05-15 17:52:08 - Average power usage (W) for gpu: [75.22566667]
+2024-05-15 17:52:08 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:52:30 - Epoch 19:
+2024-05-15 17:52:30 - Duration: 0:00:22.13
+2024-05-15 17:52:30 - Average power usage (W) for gpu: [80.123]
+2024-05-15 17:52:30 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:52:52 - Epoch 20:
+2024-05-15 17:52:52 - Duration: 0:00:22.02
+2024-05-15 17:52:52 - Average power usage (W) for gpu: [79.9975]
+2024-05-15 17:52:52 - Average power usage (W) for cpu: 0.0
+2024-05-15 17:52:52 - Carbon intensities (gCO2/kWh) fetched every 900 s at detected location Rio de Janeiro, Rio de Janeiro, BR: [141.77426]
+2024-05-15 17:52:52 - Average carbon intensity during training was 141.77 gCO2/kWh at detected location: Rio de Janeiro, Rio de Janeiro, BR.
+2024-05-15 17:52:52 - Monitoring thread ended.

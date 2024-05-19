@@ -50,7 +50,7 @@ diretorio_carbon = criar_diretorio_incrementado(diretorio_pai, 'leNet_carbono')
 print(f'Diretório Carbono criado: {diretorio_carbon}')
 
 # Definições iniciais
-maximo_epocas = 20
+maximo_epocas = 10
 tempos_treino = []
 potencias_treino = []
 tracker = CarbonTracker(epochs=maximo_epocas, monitor_epochs=-1, interpretable=True,
@@ -179,11 +179,11 @@ def treinar_e_validar(modelo, carregador_treino, carregador_validacao, criterio,
     tempo_treino = (tempo_fim - tempo_inicio)
     tempos_treino.append(tempo_treino.total_seconds())
     tracker.epoch_end()
-    return perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino.total_seconds(), consumo_energia
+    return perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino, consumo_energia
 
 # Treinamento e seleção do melhor modelo entre 10 candidatos
 numero_modelos = 10
-media_perda_validacao = []
+medias_perda_validacao = []
 indice_melhor_modelo = -1
 melhor_modelo = modelo
 modelos = []
@@ -197,33 +197,29 @@ for i in range(numero_modelos):
     flops, parametros = profile(modelo, inputs=(entrada,), verbose=False)
     criterio = nn.CrossEntropyLoss()
     otimizador = optim.Adam(modelo.parameters(), lr=0.001, weight_decay=1e-4)
-    perda_treino, precisao_treino, perda_validacao, precisao_validacao, tempo_treino, consumo_energia = (
+    perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino, consumo_energia = (
         treinar_e_validar(modelo, carregador_treino, carregador_validacao, criterio, otimizador, 20))
-    metricas.append((perda_treino, precisao_treino, perda_validacao, precisao_validacao, tempo_treino.total_seconds(),
-                     consumo_energia))
+    metricas.append((perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino.total_seconds(), consumo_energia))
     # Calcular a média das métricas após o treino de cada modelo
     media_perda_treino = np.mean([m[0] for m in metricas])
     media_acuracia_treino = np.mean([m[1] for m in metricas])
-    media_perda_validacao.append(np.mean([m[2] for m in metricas]))
+    media_perda_validacao = np.mean([m[2] for m in metricas])
     media_acuracia_validacao = np.mean([m[3] for m in metricas])
-    print(
-        f'Modelo {i + 1}: Média Perda Treino: {media_perda_treino:.4f}, Média Acurácia Treino: {media_acuracia_treino:.4f}, '
-        f'Média Perda Validação: {media_perda_validacao[-1]:.4f}, Média Acurácia Validação: {media_acuracia_validacao:.4f}')
+    print(f'Modelo {i + 1}: Média Perda Treino: {media_perda_treino:.4f}, Média Acurácia Treino: {media_acuracia_treino:.4f}, '
+          f'Média Perda Validação: {media_perda_validacao:.4f}, Média Acurácia Validação: {media_acuracia_validacao:.4f}')
     print(f'Tempo de treino: {tempo_treino}')
     print(f'FLOPs: {flops}')
     print(f'Parâmetros: {parametros}')
     print(f'Consumo de energia: {consumo_energia} W')
-    media_perda_validacao.append(media_perda_validacao)
+    medias_perda_validacao.append(media_perda_validacao)
     media_metricas.append(
-        (media_perda_treino, media_acuracia_treino, media_perda_validacao, media_acuracia_validacao,
-         tempo_treino.total_seconds(),
+        (media_perda_treino, media_acuracia_treino, media_perda_validacao, media_acuracia_validacao, tempo_treino.total_seconds(),
          consumo_energia))
     modelos.append(modelo)
 
 # Cria um DataFrame com as métricas médias e salva em um arquivo Excel
-df_metricas = pd.DataFrame(media_metricas,
-                           columns=['Média Perda Treino', 'Média Precisão Treino', 'Média Perda Validação',
-                                    'Média Precisão Validação', 'TempoTreino', 'ConsumoEnergia'])
+df_metricas = pd.DataFrame(media_metricas, columns=['Média Perda Treino', 'Média Precisão Treino', 'Média Perda Validação',
+                                                    'Média Precisão Validação', 'TempoTreino', 'ConsumoEnergia'])
 
 # Adiciona uma coluna 'Modelo_x' ao DataFrame
 nomes_modelos = ['Modelo_' + str(i + 1) for i in range(numero_modelos)]
@@ -233,12 +229,13 @@ df_metricas.insert(0, 'Modelo', nomes_modelos)
 df_metricas.to_excel(f'{diretorio_pai}/metricas_modelos.xlsx', index=False)
 
 # Seleciona o melhor modelo com base na menor perda de validação
-indice_melhor_modelo = media_perda_validacao.index(min(media_perda_validacao).item())
+indice_melhor_modelo = medias_perda_validacao.index(min(medias_perda_validacao))
+
 melhor_modelo = modelos[indice_melhor_modelo]
 print('************************************************************************************************')
-print(
-    f'O melhor modelo é o {nomes_modelos[indice_melhor_modelo]} com a menor média de perda de validação: {min(media_perda_validacao):.4f}')
+print(f'O melhor modelo é o {nomes_modelos[indice_melhor_modelo]} com a menor média de perda de validação: {media_perda_validacao:.4f}')
 print('************************************************************************************************')
+
 
 # Calcular a média dos tempos de treino e consumo de energia
 media_tempo_treino = np.mean(tempos_treino)
