@@ -205,7 +205,7 @@ for i in range(numero_modelos):
     print("______________________________________________________________________________________________________")
     print(f'Treinando modelo {i + 1}/{numero_modelos}')
     entrada = torch.randn(1, 1, 28, 28).to(dispositivo)
-    modelo = AlexNet.to(dispositivo)
+    modelo = AlexNet().to(dispositivo)
     flops, parametros = profile(modelo, inputs=(entrada,), verbose=False)
     criterio = nn.CrossEntropyLoss()
     otimizador = optim.Adam(modelo.parameters(), lr=0.001, weight_decay=1e-4)

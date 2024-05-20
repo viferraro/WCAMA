@@ -1,4 +1,0 @@
-2024-03-28 22:09:39 - carbontracker version 1.2.5
-2024-03-28 22:09:39 - Only predicted and actual consumptions are multiplied by a PUE coefficient of 1.55 (Rhonda Ascierto, 2022, Uptime Institute Global Data Center Survey).
-2024-03-28 22:09:39 - The following components were found: GPU with device(s) NVIDIA GeForce RTX 3060. CPU with device(s) cpu:0.
-2024-03-28 22:09:39 - Monitoring thread started.

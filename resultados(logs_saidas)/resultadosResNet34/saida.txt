@@ -1,0 +1,518 @@
+______________________________________________________________________________________________________
+Treinando modelo 1/10
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 1, Perda Treino: 0.1823, Precisão Treino: 0.9445
+Época 1, Perda Validação: 0.1669, Precisão Validação: 0.9593
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 2, Perda Treino: 1.1241, Precisão Treino: 0.6736
+Época 2, Perda Validação: 0.1582, Precisão Validação: 0.9529
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 3, Perda Treino: 0.1342, Precisão Treino: 0.9596
+Época 3, Perda Validação: 0.1599, Precisão Validação: 0.9522
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 4, Perda Treino: 0.0872, Precisão Treino: 0.9730
+Época 4, Perda Validação: 0.0812, Precisão Validação: 0.9751
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 5, Perda Treino: 0.0712, Precisão Treino: 0.9783
+Época 5, Perda Validação: 0.0773, Precisão Validação: 0.9768
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 6, Perda Treino: 0.0615, Precisão Treino: 0.9813
+Época 6, Perda Validação: 0.0659, Precisão Validação: 0.9800
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 7, Perda Treino: 0.0551, Precisão Treino: 0.9835
+Época 7, Perda Validação: 0.0600, Precisão Validação: 0.9822
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 8, Perda Treino: 0.0460, Precisão Treino: 0.9855
+Época 8, Perda Validação: 0.0526, Precisão Validação: 0.9847
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 9, Perda Treino: 0.0430, Precisão Treino: 0.9867
+Época 9, Perda Validação: 0.0547, Precisão Validação: 0.9851
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 10, Perda Treino: 0.0387, Precisão Treino: 0.9879
+Época 10, Perda Validação: 0.0564, Precisão Validação: 0.9834
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 11, Perda Treino: 0.0343, Precisão Treino: 0.9894
+Época 11, Perda Validação: 0.0473, Precisão Validação: 0.9871
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 12, Perda Treino: 0.0322, Precisão Treino: 0.9896
+Época 12, Perda Validação: 0.0559, Precisão Validação: 0.9838
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 13, Perda Treino: 0.0297, Precisão Treino: 0.9905
+Época 13, Perda Validação: 0.0397, Precisão Validação: 0.9887
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 14, Perda Treino: 0.0285, Precisão Treino: 0.9912
+Época 14, Perda Validação: 0.0450, Precisão Validação: 0.9878
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 15, Perda Treino: 0.0275, Precisão Treino: 0.9915
+Época 15, Perda Validação: 0.0617, Precisão Validação: 0.9839
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 16, Perda Treino: 0.0253, Precisão Treino: 0.9924
+Época 16, Perda Validação: 0.0342, Precisão Validação: 0.9905
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 17, Perda Treino: 0.0220, Precisão Treino: 0.9925
+Época 17, Perda Validação: 0.0424, Precisão Validação: 0.9884
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 18, Perda Treino: 0.0240, Precisão Treino: 0.9924
+Época 18, Perda Validação: 0.0502, Precisão Validação: 0.9853
+No sudo access to read Intel's RAPL measurements from the energy_uj file.
+See issue: https://github.com/lfwa/carbontracker/issues/40
+Época 19, Perda Treino: 0.0195, Precisão Treino: 0.9941
+Época 19, Perda Validação: 0.0486, Precisão Validação: 0.9870
+Época 20, Perda Treino: 0.0197, Precisão Treino: 0.9941
+Época 20, Perda Validação: 0.0418, Precisão Validação: 0.9893
+Modelo 1: Média Perda Treino: 0.0197, Média Acurácia Treino: 0.9941, Média Perda Validação: 0.0418, Média Acurácia Validação: 0.9893
+Tempo de treino: 0:07:22.716900
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.501 W
+______________________________________________________________________________________________________
+Treinando modelo 2/10
+Época 1, Perda Treino: 0.1839, Precisão Treino: 0.9453
+Época 1, Perda Validação: 0.0895, Precisão Validação: 0.9732
+Época 2, Perda Treino: 2.4230, Precisão Treino: 0.1099
+Época 2, Perda Validação: 2.3013, Precisão Validação: 0.1151
+Época 3, Perda Treino: 2.3017, Precisão Treino: 0.1099
+Época 3, Perda Validação: 2.3014, Precisão Validação: 0.1151
+Época 4, Perda Treino: 2.3017, Precisão Treino: 0.1117
+Época 4, Perda Validação: 2.3019, Precisão Validação: 0.1151
+Época 5, Perda Treino: 2.3016, Precisão Treino: 0.1113
+Época 5, Perda Validação: 2.3013, Precisão Validação: 0.1151
+Época 6, Perda Treino: 2.3016, Precisão Treino: 0.1115
+Época 6, Perda Validação: 2.3023, Precisão Validação: 0.1151
+Época 7, Perda Treino: 2.3016, Precisão Treino: 0.1114
+Época 7, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 8, Perda Treino: 2.3015, Precisão Treino: 0.1113
+Época 8, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 9, Perda Treino: 2.3017, Precisão Treino: 0.1105
+Época 9, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 10, Perda Treino: 2.3017, Precisão Treino: 0.1110
+Época 10, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 11, Perda Treino: 2.3017, Precisão Treino: 0.1111
+Época 11, Perda Validação: 2.3010, Precisão Validação: 0.1151
+Época 12, Perda Treino: 2.3017, Precisão Treino: 0.1113
+Época 12, Perda Validação: 2.3010, Precisão Validação: 0.1151
+Época 13, Perda Treino: 2.3016, Precisão Treino: 0.1112
+Época 13, Perda Validação: 2.3010, Precisão Validação: 0.1151
+Época 14, Perda Treino: 2.3018, Precisão Treino: 0.1113
+Época 14, Perda Validação: 2.3010, Precisão Validação: 0.1151
+Época 15, Perda Treino: 2.3016, Precisão Treino: 0.1113
+Época 15, Perda Validação: 2.3019, Precisão Validação: 0.1151
+Época 16, Perda Treino: 2.3017, Precisão Treino: 0.1116
+Época 16, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 17, Perda Treino: 2.3016, Precisão Treino: 0.1110
+Época 17, Perda Validação: 2.3022, Precisão Validação: 0.1151
+Época 18, Perda Treino: 2.3016, Precisão Treino: 0.1112
+Época 18, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 19, Perda Treino: 2.3015, Precisão Treino: 0.1112
+Época 19, Perda Validação: 2.3074, Precisão Validação: 0.0967
+Época 20, Perda Treino: 2.3015, Precisão Treino: 0.1116
+Época 20, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Modelo 2: Média Perda Treino: 1.1606, Média Acurácia Treino: 0.5528, Média Perda Validação: 1.1715, Média Acurácia Validação: 0.5522
+Tempo de treino: 0:07:21.287881
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 80.078 W
+______________________________________________________________________________________________________
+Treinando modelo 3/10
+Época 1, Perda Treino: 0.1799, Precisão Treino: 0.9460
+Época 1, Perda Validação: 0.0808, Precisão Validação: 0.9772
+Época 2, Perda Treino: 1.1586, Precisão Treino: 0.6394
+Época 2, Perda Validação: 0.2289, Precisão Validação: 0.9337
+Época 3, Perda Treino: 0.1290, Precisão Treino: 0.9625
+Época 3, Perda Validação: 0.0891, Precisão Validação: 0.9756
+Época 4, Perda Treino: 0.0832, Precisão Treino: 0.9756
+Época 4, Perda Validação: 0.0818, Precisão Validação: 0.9772
+Época 5, Perda Treino: 0.0641, Precisão Treino: 0.9822
+Época 5, Perda Validação: 0.0614, Precisão Validação: 0.9822
+Época 6, Perda Treino: 0.0513, Precisão Treino: 0.9850
+Época 6, Perda Validação: 0.0484, Precisão Validação: 0.9860
+Época 7, Perda Treino: 0.0499, Precisão Treino: 0.9856
+Época 7, Perda Validação: 0.0524, Precisão Validação: 0.9842
+Época 8, Perda Treino: 0.0419, Precisão Treino: 0.9880
+Época 8, Perda Validação: 0.0397, Precisão Validação: 0.9895
+Época 9, Perda Treino: 0.0389, Precisão Treino: 0.9885
+Época 9, Perda Validação: 0.0531, Precisão Validação: 0.9854
+Época 10, Perda Treino: 0.0336, Precisão Treino: 0.9904
+Época 10, Perda Validação: 0.0426, Precisão Validação: 0.9878
+Época 11, Perda Treino: 0.0346, Precisão Treino: 0.9895
+Época 11, Perda Validação: 0.0413, Precisão Validação: 0.9890
+Época 12, Perda Treino: 0.0297, Precisão Treino: 0.9907
+Época 12, Perda Validação: 0.0342, Precisão Validação: 0.9900
+Época 13, Perda Treino: 0.0255, Precisão Treino: 0.9924
+Época 13, Perda Validação: 0.0483, Precisão Validação: 0.9877
+Época 14, Perda Treino: 0.0241, Precisão Treino: 0.9929
+Época 14, Perda Validação: 0.0371, Precisão Validação: 0.9897
+Época 15, Perda Treino: 0.0224, Precisão Treino: 0.9930
+Época 15, Perda Validação: 0.0416, Precisão Validação: 0.9882
+Época 16, Perda Treino: 0.0238, Precisão Treino: 0.9925
+Época 16, Perda Validação: 0.0434, Precisão Validação: 0.9888
+Época 17, Perda Treino: 0.0212, Precisão Treino: 0.9934
+Época 17, Perda Validação: 0.0405, Precisão Validação: 0.9883
+Época 18, Perda Treino: 0.0194, Precisão Treino: 0.9941
+Época 18, Perda Validação: 0.0378, Precisão Validação: 0.9904
+Época 19, Perda Treino: 0.0200, Precisão Treino: 0.9939
+Época 19, Perda Validação: 0.0473, Precisão Validação: 0.9872
+Época 20, Perda Treino: 0.0188, Precisão Treino: 0.9942
+Época 20, Perda Validação: 0.0484, Precisão Validação: 0.9884
+Modelo 3: Média Perda Treino: 0.7800, Média Acurácia Treino: 0.7000, Média Perda Validação: 0.7972, Média Acurácia Validação: 0.6976
+Tempo de treino: 0:07:21.476056
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.283 W
+______________________________________________________________________________________________________
+Treinando modelo 4/10
+Época 1, Perda Treino: 0.1753, Precisão Treino: 0.9471
+Época 1, Perda Validação: 0.2754, Precisão Validação: 0.9115
+Época 2, Perda Treino: 1.6442, Precisão Treino: 0.4760
+Época 2, Perda Validação: 0.2800, Precisão Validação: 0.9126
+Época 3, Perda Treino: 0.1613, Precisão Treino: 0.9519
+Época 3, Perda Validação: 0.0944, Precisão Validação: 0.9721
+Época 4, Perda Treino: 0.0890, Precisão Treino: 0.9725
+Época 4, Perda Validação: 0.0691, Precisão Validação: 0.9790
+Época 5, Perda Treino: 0.0675, Precisão Treino: 0.9795
+Época 5, Perda Validação: 0.0570, Precisão Validação: 0.9818
+Época 6, Perda Treino: 0.0639, Precisão Treino: 0.9808
+Época 6, Perda Validação: 0.0474, Precisão Validação: 0.9853
+Época 7, Perda Treino: 0.0524, Precisão Treino: 0.9846
+Época 7, Perda Validação: 0.0433, Precisão Validação: 0.9867
+Época 8, Perda Treino: 0.0471, Precisão Treino: 0.9860
+Época 8, Perda Validação: 0.0513, Precisão Validação: 0.9845
+Época 9, Perda Treino: 0.0423, Precisão Treino: 0.9872
+Época 9, Perda Validação: 0.0466, Precisão Validação: 0.9870
+Época 10, Perda Treino: 0.0364, Precisão Treino: 0.9889
+Época 10, Perda Validação: 0.0540, Precisão Validação: 0.9846
+Época 11, Perda Treino: 0.0353, Precisão Treino: 0.9890
+Época 11, Perda Validação: 0.0337, Precisão Validação: 0.9897
+Época 12, Perda Treino: 0.0314, Precisão Treino: 0.9903
+Época 12, Perda Validação: 0.0468, Precisão Validação: 0.9858
+Época 13, Perda Treino: 0.0296, Precisão Treino: 0.9905
+Época 13, Perda Validação: 0.0642, Precisão Validação: 0.9818
+Época 14, Perda Treino: 0.0271, Precisão Treino: 0.9916
+Época 14, Perda Validação: 0.0469, Precisão Validação: 0.9865
+Época 15, Perda Treino: 0.0255, Precisão Treino: 0.9918
+Época 15, Perda Validação: 0.0460, Precisão Validação: 0.9868
+Época 16, Perda Treino: 0.0218, Precisão Treino: 0.9929
+Época 16, Perda Validação: 0.0448, Precisão Validação: 0.9879
+Época 17, Perda Treino: 0.0247, Precisão Treino: 0.9920
+Época 17, Perda Validação: 0.0291, Precisão Validação: 0.9918
+Época 18, Perda Treino: 0.0202, Precisão Treino: 0.9935
+Época 18, Perda Validação: 0.0408, Precisão Validação: 0.9888
+Época 19, Perda Treino: 0.0195, Precisão Treino: 0.9935
+Época 19, Perda Validação: 0.0629, Precisão Validação: 0.9844
+Época 20, Perda Treino: 0.0204, Precisão Treino: 0.9936
+Época 20, Perda Validação: 0.0405, Precisão Validação: 0.9885
+Modelo 4: Média Perda Treino: 0.5901, Média Acurácia Treino: 0.7734, Média Perda Validação: 0.6080, Média Acurácia Validação: 0.7703
+Tempo de treino: 0:07:22.039746
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.286 W
+______________________________________________________________________________________________________
+Treinando modelo 5/10
+Época 1, Perda Treino: 0.1823, Precisão Treino: 0.9455
+Época 1, Perda Validação: 0.3002, Precisão Validação: 0.9020
+Época 2, Perda Treino: 0.9628, Precisão Treino: 0.6934
+Época 2, Perda Validação: 0.1157, Precisão Validação: 0.9692
+Época 3, Perda Treino: 0.0931, Precisão Treino: 0.9740
+Época 3, Perda Validação: 0.0709, Precisão Validação: 0.9792
+Época 4, Perda Treino: 0.0679, Precisão Treino: 0.9804
+Época 4, Perda Validação: 0.0550, Precisão Validação: 0.9839
+Época 5, Perda Treino: 0.0565, Precisão Treino: 0.9842
+Época 5, Perda Validação: 0.0590, Precisão Validação: 0.9834
+Época 6, Perda Treino: 0.0507, Precisão Treino: 0.9862
+Época 6, Perda Validação: 0.0450, Precisão Validação: 0.9868
+Época 7, Perda Treino: 0.0431, Precisão Treino: 0.9873
+Época 7, Perda Validação: 0.0374, Precisão Validação: 0.9884
+Época 8, Perda Treino: 0.0389, Precisão Treino: 0.9886
+Época 8, Perda Validação: 0.0444, Precisão Validação: 0.9866
+Época 9, Perda Treino: 0.0362, Precisão Treino: 0.9892
+Época 9, Perda Validação: 0.0390, Precisão Validação: 0.9888
+Época 10, Perda Treino: 0.0318, Precisão Treino: 0.9905
+Época 10, Perda Validação: 0.0765, Precisão Validação: 0.9799
+Época 11, Perda Treino: 0.0310, Precisão Treino: 0.9910
+Época 11, Perda Validação: 0.0431, Precisão Validação: 0.9870
+Época 12, Perda Treino: 0.0259, Precisão Treino: 0.9926
+Época 12, Perda Validação: 0.0357, Precisão Validação: 0.9898
+Época 13, Perda Treino: 0.0248, Precisão Treino: 0.9926
+Época 13, Perda Validação: 0.0464, Precisão Validação: 0.9888
+Época 14, Perda Treino: 0.0226, Precisão Treino: 0.9936
+Época 14, Perda Validação: 0.0508, Precisão Validação: 0.9880
+Época 15, Perda Treino: 0.0200, Precisão Treino: 0.9942
+Época 15, Perda Validação: 0.0427, Precisão Validação: 0.9884
+Época 16, Perda Treino: 0.0220, Precisão Treino: 0.9937
+Época 16, Perda Validação: 0.0346, Precisão Validação: 0.9887
+Época 17, Perda Treino: 0.0199, Precisão Treino: 0.9939
+Época 17, Perda Validação: 0.0448, Precisão Validação: 0.9877
+Época 18, Perda Treino: 0.0194, Precisão Treino: 0.9944
+Época 18, Perda Validação: 0.0470, Precisão Validação: 0.9882
+Época 19, Perda Treino: 0.0186, Precisão Treino: 0.9945
+Época 19, Perda Validação: 0.0393, Precisão Validação: 0.9895
+Época 20, Perda Treino: 0.0195, Precisão Treino: 0.9941
+Época 20, Perda Validação: 0.0409, Precisão Validação: 0.9884
+Modelo 5: Média Perda Treino: 0.4760, Média Acurácia Treino: 0.8175, Média Perda Validação: 0.4946, Média Acurácia Validação: 0.8139
+Tempo de treino: 0:07:23.508690
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.187 W
+______________________________________________________________________________________________________
+Treinando modelo 6/10
+Época 1, Perda Treino: 0.1852, Precisão Treino: 0.9445
+Época 1, Perda Validação: 0.2514, Precisão Validação: 0.9144
+Época 2, Perda Treino: 2.4440, Precisão Treino: 0.1110
+Época 2, Perda Validação: 2.3008, Precisão Validação: 0.1151
+Época 3, Perda Treino: 2.3017, Precisão Treino: 0.1117
+Época 3, Perda Validação: 2.3013, Precisão Validação: 0.1151
+Época 4, Perda Treino: 2.3016, Precisão Treino: 0.1117
+Época 4, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 5, Perda Treino: 2.3016, Precisão Treino: 0.1117
+Época 5, Perda Validação: 2.3013, Precisão Validação: 0.1151
+Época 6, Perda Treino: 2.3016, Precisão Treino: 0.1118
+Época 6, Perda Validação: 2.3013, Precisão Validação: 0.1151
+Época 7, Perda Treino: 2.3015, Precisão Treino: 0.1119
+Época 7, Perda Validação: 2.3018, Precisão Validação: 0.1151
+Época 8, Perda Treino: 1.0305, Precisão Treino: 0.6178
+Época 8, Perda Validação: 0.2042, Precisão Validação: 0.9386
+Época 9, Perda Treino: 0.1297, Precisão Treino: 0.9627
+Época 9, Perda Validação: 0.0837, Precisão Validação: 0.9738
+Época 10, Perda Treino: 0.0733, Precisão Treino: 0.9781
+Época 10, Perda Validação: 0.0595, Precisão Validação: 0.9814
+Época 11, Perda Treino: 0.0601, Precisão Treino: 0.9821
+Época 11, Perda Validação: 0.0589, Precisão Validação: 0.9823
+Época 12, Perda Treino: 0.0503, Precisão Treino: 0.9854
+Época 12, Perda Validação: 0.0423, Precisão Validação: 0.9862
+Época 13, Perda Treino: 0.0436, Precisão Treino: 0.9865
+Época 13, Perda Validação: 0.0589, Precisão Validação: 0.9818
+Época 14, Perda Treino: 0.0390, Precisão Treino: 0.9883
+Época 14, Perda Validação: 0.0518, Precisão Validação: 0.9852
+Época 15, Perda Treino: 0.0340, Precisão Treino: 0.9900
+Época 15, Perda Validação: 0.0476, Precisão Validação: 0.9848
+Época 16, Perda Treino: 0.0323, Precisão Treino: 0.9899
+Época 16, Perda Validação: 0.0828, Precisão Validação: 0.9750
+Época 17, Perda Treino: 0.0305, Precisão Treino: 0.9907
+Época 17, Perda Validação: 0.0420, Precisão Validação: 0.9877
+Época 18, Perda Treino: 0.0260, Precisão Treino: 0.9918
+Época 18, Perda Validação: 0.0475, Precisão Validação: 0.9852
+Época 19, Perda Treino: 0.0260, Precisão Treino: 0.9918
+Época 19, Perda Validação: 0.0537, Precisão Validação: 0.9842
+Época 20, Perda Treino: 0.0233, Precisão Treino: 0.9926
+Época 20, Perda Validação: 0.0385, Precisão Validação: 0.9894
+Modelo 6: Média Perda Treino: 0.4005, Média Acurácia Treino: 0.8467, Média Perda Validação: 0.4186, Média Acurácia Validação: 0.8432
+Tempo de treino: 0:07:23.907568
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.753 W
+______________________________________________________________________________________________________
+Treinando modelo 7/10
+Época 1, Perda Treino: 0.1778, Precisão Treino: 0.9473
+Época 1, Perda Validação: 0.1741, Precisão Validação: 0.9458
+Época 2, Perda Treino: 0.9375, Precisão Treino: 0.7445
+Época 2, Perda Validação: 0.1412, Precisão Validação: 0.9581
+Época 3, Perda Treino: 0.1094, Precisão Treino: 0.9682
+Época 3, Perda Validação: 0.0982, Precisão Validação: 0.9691
+Época 4, Perda Treino: 0.0771, Precisão Treino: 0.9761
+Época 4, Perda Validação: 0.0781, Precisão Validação: 0.9772
+Época 5, Perda Treino: 0.0670, Precisão Treino: 0.9792
+Época 5, Perda Validação: 0.0625, Precisão Validação: 0.9812
+Época 6, Perda Treino: 0.0554, Precisão Treino: 0.9837
+Época 6, Perda Validação: 0.0532, Precisão Validação: 0.9842
+Época 7, Perda Treino: 0.0526, Precisão Treino: 0.9838
+Época 7, Perda Validação: 0.0533, Precisão Validação: 0.9838
+Época 8, Perda Treino: 0.0409, Precisão Treino: 0.9874
+Época 8, Perda Validação: 0.0473, Precisão Validação: 0.9848
+Época 9, Perda Treino: 0.0400, Precisão Treino: 0.9881
+Época 9, Perda Validação: 0.0660, Precisão Validação: 0.9811
+Época 10, Perda Treino: 0.0362, Precisão Treino: 0.9889
+Época 10, Perda Validação: 0.0534, Precisão Validação: 0.9847
+Época 11, Perda Treino: 0.0316, Precisão Treino: 0.9905
+Época 11, Perda Validação: 0.0539, Precisão Validação: 0.9841
+Época 12, Perda Treino: 0.0297, Precisão Treino: 0.9906
+Época 12, Perda Validação: 0.0494, Precisão Validação: 0.9864
+Época 13, Perda Treino: 0.0274, Precisão Treino: 0.9911
+Época 13, Perda Validação: 0.0449, Precisão Validação: 0.9864
+Época 14, Perda Treino: 0.0248, Precisão Treino: 0.9924
+Época 14, Perda Validação: 0.0418, Precisão Validação: 0.9868
+Época 15, Perda Treino: 0.0243, Precisão Treino: 0.9922
+Época 15, Perda Validação: 0.0478, Precisão Validação: 0.9858
+Época 16, Perda Treino: 0.0221, Precisão Treino: 0.9930
+Época 16, Perda Validação: 0.0470, Precisão Validação: 0.9881
+Época 17, Perda Treino: 0.0201, Precisão Treino: 0.9936
+Época 17, Perda Validação: 0.0480, Precisão Validação: 0.9881
+Época 18, Perda Treino: 0.0207, Precisão Treino: 0.9939
+Época 18, Perda Validação: 0.0409, Precisão Validação: 0.9890
+Época 19, Perda Treino: 0.0193, Precisão Treino: 0.9940
+Época 19, Perda Validação: 0.0423, Precisão Validação: 0.9883
+Época 20, Perda Treino: 0.0190, Precisão Treino: 0.9941
+Época 20, Perda Validação: 0.0345, Precisão Validação: 0.9900
+Modelo 7: Média Perda Treino: 0.3460, Média Acurácia Treino: 0.8678, Média Perda Validação: 0.3637, Média Acurácia Validação: 0.8642
+Tempo de treino: 0:07:23.843027
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 80.669 W
+______________________________________________________________________________________________________
+Treinando modelo 8/10
+Época 1, Perda Treino: 0.1837, Precisão Treino: 0.9458
+Época 1, Perda Validação: 0.3225, Precisão Validação: 0.9012
+Época 2, Perda Treino: 1.3766, Precisão Treino: 0.5587
+Época 2, Perda Validação: 0.2499, Precisão Validação: 0.9235
+Época 3, Perda Treino: 0.1538, Precisão Treino: 0.9539
+Época 3, Perda Validação: 0.1062, Precisão Validação: 0.9686
+Época 4, Perda Treino: 0.0930, Precisão Treino: 0.9729
+Época 4, Perda Validação: 0.0691, Precisão Validação: 0.9801
+Época 5, Perda Treino: 0.0723, Precisão Treino: 0.9785
+Época 5, Perda Validação: 0.0573, Precisão Validação: 0.9835
+Época 6, Perda Treino: 0.0614, Precisão Treino: 0.9815
+Época 6, Perda Validação: 0.0771, Precisão Validação: 0.9779
+Época 7, Perda Treino: 0.0518, Precisão Treino: 0.9844
+Época 7, Perda Validação: 0.0568, Precisão Validação: 0.9826
+Época 8, Perda Treino: 0.0496, Precisão Treino: 0.9851
+Época 8, Perda Validação: 0.0493, Precisão Validação: 0.9849
+Época 9, Perda Treino: 0.0420, Precisão Treino: 0.9871
+Época 9, Perda Validação: 0.0696, Precisão Validação: 0.9793
+Época 10, Perda Treino: 0.0381, Precisão Treino: 0.9886
+Época 10, Perda Validação: 0.0447, Precisão Validação: 0.9873
+Época 11, Perda Treino: 0.0369, Precisão Treino: 0.9887
+Época 11, Perda Validação: 0.0575, Precisão Validação: 0.9842
+Época 12, Perda Treino: 0.0322, Precisão Treino: 0.9905
+Época 12, Perda Validação: 0.0517, Precisão Validação: 0.9849
+Época 13, Perda Treino: 0.0290, Precisão Treino: 0.9913
+Época 13, Perda Validação: 0.0341, Precisão Validação: 0.9905
+Época 14, Perda Treino: 0.0283, Precisão Treino: 0.9911
+Época 14, Perda Validação: 0.0437, Precisão Validação: 0.9879
+Época 15, Perda Treino: 0.0251, Precisão Treino: 0.9923
+Época 15, Perda Validação: 0.0460, Precisão Validação: 0.9879
+Época 16, Perda Treino: 0.0239, Precisão Treino: 0.9928
+Época 16, Perda Validação: 0.0379, Precisão Validação: 0.9884
+Época 17, Perda Treino: 0.0220, Precisão Treino: 0.9932
+Época 17, Perda Validação: 0.0427, Precisão Validação: 0.9882
+Época 18, Perda Treino: 0.0232, Precisão Treino: 0.9928
+Época 18, Perda Validação: 0.0409, Precisão Validação: 0.9883
+Época 19, Perda Treino: 0.0202, Precisão Treino: 0.9939
+Época 19, Perda Validação: 0.0400, Precisão Validação: 0.9884
+Época 20, Perda Treino: 0.0179, Precisão Treino: 0.9949
+Época 20, Perda Validação: 0.0567, Precisão Validação: 0.9850
+Modelo 8: Média Perda Treino: 0.3050, Média Acurácia Treino: 0.8837, Média Perda Validação: 0.3253, Média Acurácia Validação: 0.8793
+Tempo de treino: 0:07:24.093298
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.311 W
+______________________________________________________________________________________________________
+Treinando modelo 9/10
+Época 1, Perda Treino: 0.1895, Precisão Treino: 0.9441
+Época 1, Perda Validação: 0.1165, Precisão Validação: 0.9667
+Época 2, Perda Treino: 0.9099, Precisão Treino: 0.7707
+Época 2, Perda Validação: 0.1660, Precisão Validação: 0.9508
+Época 3, Perda Treino: 0.1295, Precisão Treino: 0.9629
+Época 3, Perda Validação: 0.0946, Precisão Validação: 0.9722
+Época 4, Perda Treino: 0.0828, Precisão Treino: 0.9764
+Época 4, Perda Validação: 0.0653, Precisão Validação: 0.9812
+Época 5, Perda Treino: 0.0601, Precisão Treino: 0.9826
+Época 5, Perda Validação: 0.0787, Precisão Validação: 0.9766
+Época 6, Perda Treino: 0.0535, Precisão Treino: 0.9846
+Época 6, Perda Validação: 0.0477, Precisão Validação: 0.9859
+Época 7, Perda Treino: 0.0475, Precisão Treino: 0.9865
+Época 7, Perda Validação: 0.0499, Precisão Validação: 0.9854
+Época 8, Perda Treino: 0.0407, Precisão Treino: 0.9879
+Época 8, Perda Validação: 0.0486, Precisão Validação: 0.9862
+Época 9, Perda Treino: 0.0375, Precisão Treino: 0.9886
+Época 9, Perda Validação: 0.0474, Precisão Validação: 0.9864
+Época 10, Perda Treino: 0.0345, Precisão Treino: 0.9897
+Época 10, Perda Validação: 0.0556, Precisão Validação: 0.9844
+Época 11, Perda Treino: 0.0292, Precisão Treino: 0.9911
+Época 11, Perda Validação: 0.0517, Precisão Validação: 0.9849
+Época 12, Perda Treino: 0.0282, Precisão Treino: 0.9915
+Época 12, Perda Validação: 0.0392, Precisão Validação: 0.9891
+Época 13, Perda Treino: 0.0260, Precisão Treino: 0.9920
+Época 13, Perda Validação: 0.0485, Precisão Validação: 0.9869
+Época 14, Perda Treino: 0.0226, Precisão Treino: 0.9925
+Época 14, Perda Validação: 0.0374, Precisão Validação: 0.9893
+Época 15, Perda Treino: 0.0223, Precisão Treino: 0.9934
+Época 15, Perda Validação: 0.0366, Precisão Validação: 0.9902
+Época 16, Perda Treino: 0.0182, Precisão Treino: 0.9943
+Época 16, Perda Validação: 0.0452, Precisão Validação: 0.9881
+Época 17, Perda Treino: 0.0206, Precisão Treino: 0.9937
+Época 17, Perda Validação: 0.0422, Precisão Validação: 0.9885
+Época 18, Perda Treino: 0.0186, Precisão Treino: 0.9942
+Época 18, Perda Validação: 0.0490, Precisão Validação: 0.9876
+Época 19, Perda Treino: 0.0160, Precisão Treino: 0.9953
+Época 19, Perda Validação: 0.0427, Precisão Validação: 0.9885
+Época 20, Perda Treino: 0.0154, Precisão Treino: 0.9956
+Época 20, Perda Validação: 0.0378, Precisão Validação: 0.9898
+Modelo 9: Média Perda Treino: 0.2728, Média Acurácia Treino: 0.8961, Média Perda Validação: 0.2934, Média Acurácia Validação: 0.8916
+Tempo de treino: 0:07:24.116082
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.454 W
+______________________________________________________________________________________________________
+Treinando modelo 10/10
+Época 1, Perda Treino: 0.1771, Precisão Treino: 0.9461
+Época 1, Perda Validação: 0.1114, Precisão Validação: 0.9654
+Época 2, Perda Treino: 2.5904, Precisão Treino: 0.1110
+Época 2, Perda Validação: 2.3015, Precisão Validação: 0.1151
+Época 3, Perda Treino: 2.3017, Precisão Treino: 0.1116
+Época 3, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 4, Perda Treino: 2.3016, Precisão Treino: 0.1117
+Época 4, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 5, Perda Treino: 2.3016, Precisão Treino: 0.1117
+Época 5, Perda Validação: 2.3022, Precisão Validação: 0.1151
+Época 6, Perda Treino: 2.3017, Precisão Treino: 0.1117
+Época 6, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 7, Perda Treino: 2.3015, Precisão Treino: 0.1116
+Época 7, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 8, Perda Treino: 2.3015, Precisão Treino: 0.1117
+Época 8, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 9, Perda Treino: 2.3017, Precisão Treino: 0.1113
+Época 9, Perda Validação: 2.3013, Precisão Validação: 0.1151
+Época 10, Perda Treino: 2.3017, Precisão Treino: 0.1115
+Época 10, Perda Validação: 2.3015, Precisão Validação: 0.1151
+Época 11, Perda Treino: 2.3016, Precisão Treino: 0.1112
+Época 11, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 12, Perda Treino: 2.3018, Precisão Treino: 0.1115
+Época 12, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 13, Perda Treino: 2.3017, Precisão Treino: 0.1112
+Época 13, Perda Validação: 2.3010, Precisão Validação: 0.1151
+Época 14, Perda Treino: 2.3016, Precisão Treino: 0.1114
+Época 14, Perda Validação: 2.3010, Precisão Validação: 0.1151
+Época 15, Perda Treino: 2.3016, Precisão Treino: 0.1108
+Época 15, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 16, Perda Treino: 2.3017, Precisão Treino: 0.1105
+Época 16, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 17, Perda Treino: 2.3017, Precisão Treino: 0.1104
+Época 17, Perda Validação: 2.3015, Precisão Validação: 0.1151
+Época 18, Perda Treino: 2.3017, Precisão Treino: 0.1116
+Época 18, Perda Validação: 2.3012, Precisão Validação: 0.1151
+Época 19, Perda Treino: 2.3016, Precisão Treino: 0.1117
+Época 19, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Época 20, Perda Treino: 2.3016, Precisão Treino: 0.1117
+Época 20, Perda Validação: 2.3011, Precisão Validação: 0.1151
+Modelo 10: Média Perda Treino: 0.4757, Média Acurácia Treino: 0.8177, Média Perda Validação: 0.4941, Média Acurácia Validação: 0.8139
+Tempo de treino: 0:07:23.979920
+FLOPs: 69921536.0
+Parâmetros: 21292042.0
+Consumo de energia: 81.156 W
+************************************************************************************************
+O melhor modelo é o Modelo_1 com a menor média de perda de validação: 0.4941
+************************************************************************************************
+Tempo Médio de Treino: 443.0969168 segundos
+Consumo Médio de Energia: 82.09140364666666 W
+Média da Acurácia: 0.9906
+Média da Precisão: 0.990586611319142
+Média do Recall: 0.9905186592097455
+Média do F1 Score: 0.9905307270383401
+Média do Tempo de Teste: 1.5991592000000003 segundos
