@@ -1,4 +1,3 @@
-
 import os
 import sys
 import io
@@ -42,11 +41,11 @@ def criar_diretorio_incrementado(diretorio_base, nome_subpasta):
     return diretorio_pai
 
 # Cria o diretório pai 'LeNetMNIST_' com incremento, se necessário
-diretorio_pai = criar_diretorio_incrementado('resultadosLeNet', 'leNetMNIST')
+diretorio_pai = criar_diretorio_incrementado('resultadosMobileNet', 'mobileNetMNIST')
 print(f'Diretório criado: {diretorio_pai}')
 
 # Cria o diretório 'leNetCarbon'
-diretorio_carbon = criar_diretorio_incrementado(diretorio_pai, 'leNet_carbono')
+diretorio_carbon = criar_diretorio_incrementado(diretorio_pai, 'mobileNet_carbono')
 print(f'Diretório Carbono criado: {diretorio_carbon}')
 
 # Definições iniciais
@@ -71,34 +70,56 @@ tamanho_treino = int(0.8 * len(conjunto_treino_completo))
 tamanho_validacao = len(conjunto_treino_completo) - tamanho_treino
 conjunto_treino, conjunto_validacao = random_split(conjunto_treino_completo, [tamanho_treino, tamanho_validacao])
 
-carregador_treino = DataLoader(conjunto_treino, batch_size=64, shuffle=True)
-carregador_validacao = DataLoader(conjunto_validacao, batch_size=64, shuffle=False)
-carregador_teste = DataLoader(conjunto_teste, batch_size=64, shuffle=False)
+carregador_treino = DataLoader(conjunto_treino, batch_size=32, shuffle=True)
+carregador_validacao = DataLoader(conjunto_validacao, batch_size=32, shuffle=False)
+carregador_teste = DataLoader(conjunto_teste, batch_size=32, shuffle=False)
 
-# Definir rede neural LeNet-5
-class RedeLeNet5(nn.Module):
+# Definindo blocos de construção da MobileNet
+def conv_dw(in_channels, out_channels, stride):
+    return nn.Sequential(
+        nn.Conv2d(in_channels, in_channels, 3, stride, 1, groups=in_channels, bias=False),
+        nn.BatchNorm2d(in_channels),
+        nn.ReLU(inplace=True),
+
+        nn.Conv2d(in_channels, out_channels, 1, 1, 0, bias=False),
+        nn.BatchNorm2d(out_channels),
+        nn.ReLU(inplace=True),
+    )
+
+
+# Arquitetura simplificada da MobileNet para MNIST
+class MobileNet(nn.Module):
     def __init__(self):
-        super(RedeLeNet5, self).__init__()
-        self.convolucao1 = nn.Conv2d(1, 32, kernel_size=3)
-        self.convolucao2 = nn.Conv2d(32, 64, kernel_size=3)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.5)
-        self.linear1 = nn.Linear(9216, 64)
-        self.linear2 = nn.Linear(64, 10)
+        super(MobileNet, self).__init__()
+        self.model = nn.Sequential(
+            conv_dw(1, 32, 1),  # MNIST é um canal (escala de cinza), 32 filtros
+            nn.AvgPool2d(2, 2),
+            conv_dw(32, 64, 1),
+            nn.AvgPool2d(2, 2),
+            conv_dw(64, 128, 1),
+            nn.AvgPool2d(2, 2),
+            nn.Dropout(0.25),
+            nn.Flatten(),
+            # Calcula o tamanho correto para a entrada da camada linear
+            nn.Linear(128 * 3 * 3, 10)  # 10 classes
+        )
 
     def forward(self, x):
-        x = F.relu(self.convolucao1(x))
-        x = F.relu(self.convolucao2(x))
-        x = F.max_pool2d(x, 2)
-        x = self.dropout1(x)
-        x = torch.flatten(x, 1)
-        x = F.relu(self.linear1(x))
-        x = self.dropout2(x)
-        saida = F.softmax(self.linear2(x), dim=1)
-        return saida
+        return self.model(x)
 
-modelo = RedeLeNet5().to(dispositivo)
+
+# Criando o modelo
+def inicializar_pesos(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+        nn.init.kaiming_normal_(m.weight)
+
+modelo = MobileNet().to(dispositivo)
+criterio = nn.CrossEntropyLoss()
+otimizador = optim.Adam(modelo.parameters(), lr=0.0001, weight_decay=1e-4)
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(otimizador, 'min', patience=3, factor=0.1)
 print(modelo)
+
+modelo.apply(inicializar_pesos)
 
 # Salvar a saída padrão original
 saida_padrao_original = sys.stdout
@@ -183,7 +204,7 @@ def treinar_e_validar(modelo, carregador_treino, carregador_validacao, criterio,
 
 # Treinamento e seleção do melhor modelo entre 10 candidatos
 numero_modelos = 10
-medias_perda_validacao = []
+medias_acuracia_validacao = []
 indice_melhor_modelo = -1
 melhor_modelo = modelo
 modelos = []
@@ -193,10 +214,10 @@ for i in range(numero_modelos):
     print("______________________________________________________________________________________________________")
     print(f'Treinando modelo {i + 1}/{numero_modelos}')
     entrada = torch.randn(1, 1, 28, 28).to(dispositivo)
-    modelo = RedeLeNet5().to(dispositivo)
+    modelo = MobileNet().to(dispositivo)
     flops, parametros = profile(modelo, inputs=(entrada,), verbose=False)
-    criterio = nn.CrossEntropyLoss()
-    otimizador = optim.Adam(modelo.parameters(), lr=0.001, weight_decay=1e-4)
+    #criterio = nn.CrossEntropyLoss()
+    #otimizador = optim.Adam(modelo.parameters(), lr=0.001, weight_decay=1e-4)
     perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino, consumo_energia = (
         treinar_e_validar(modelo, carregador_treino, carregador_validacao, criterio, otimizador, 20))
     metricas.append((perda_treino, acuracia_treino, perda_validacao, acuracia_validacao, tempo_treino.total_seconds(), consumo_energia))
@@ -211,15 +232,15 @@ for i in range(numero_modelos):
     print(f'FLOPs: {flops}')
     print(f'Parâmetros: {parametros}')
     print(f'Consumo de energia: {consumo_energia} W')
-    medias_perda_validacao.append(media_perda_validacao)
+    medias_acuracia_validacao.append(media_acuracia_validacao)
     media_metricas.append(
         (media_perda_treino, media_acuracia_treino, media_perda_validacao, media_acuracia_validacao, tempo_treino.total_seconds(),
          consumo_energia))
     modelos.append(modelo)
 
 # Cria um DataFrame com as métricas médias e salva em um arquivo Excel
-df_metricas = pd.DataFrame(media_metricas, columns=['Média Perda Treino', 'Média Precisão Treino', 'Média Perda Validação',
-                                                    'Média Precisão Validação', 'TempoTreino', 'ConsumoEnergia'])
+df_metricas = pd.DataFrame(media_metricas, columns=['Média Perda Treino', 'Média Acurácia Treino', 'Média Perda Validação',
+                                                    'Média Acurácia Validação', 'TempoTreino', 'ConsumoEnergia'])
 
 # Adiciona uma coluna 'Modelo_x' ao DataFrame
 nomes_modelos = ['Modelo_' + str(i + 1) for i in range(numero_modelos)]
@@ -229,11 +250,11 @@ df_metricas.insert(0, 'Modelo', nomes_modelos)
 df_metricas.to_excel(f'{diretorio_pai}/metricas_modelos.xlsx', index=False)
 
 # Seleciona o melhor modelo com base na menor perda de validação
-indice_melhor_modelo = medias_perda_validacao.index(min(medias_perda_validacao))
-
+indice_melhor_modelo = medias_acuracia_validacao.index(max(medias_acuracia_validacao))
 melhor_modelo = modelos[indice_melhor_modelo]
+
 print('************************************************************************************************')
-print(f'O melhor modelo é o {nomes_modelos[indice_melhor_modelo]} com a menor média de perda de validação: {media_perda_validacao:.4f}')
+print(f'O melhor modelo é o {nomes_modelos[indice_melhor_modelo]} com a maior média de acurácia de validação: {medias_acuracia_validacao[indice_melhor_modelo]:.4f}')
 print('************************************************************************************************')
 
 
@@ -267,7 +288,7 @@ for i in range(10):
 
     # Calcula as métricas para a inferência atual
     acuracias.append(accuracy_score(y_verdadeiros, y_previstos))
-    precisoes.append(precision_score(y_verdadeiros, y_previstos, average='macro'))
+    precisoes.append(precision_score(y_verdadeiros, y_previstos, average='macro', zero_division=0))
     revocacoes.append(recall_score(y_verdadeiros, y_previstos, average='macro'))
     pontuacoes_f1.append(f1_score(y_verdadeiros, y_previstos, average='macro'))
     tempos_teste.append((fim_tempo_teste - inicio_tempo_teste).total_seconds())
